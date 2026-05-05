@@ -1,0 +1,440 @@
+@import "tailwindcss";
+
+/* ============================================================
+   SELVASTAY PRO — VALVE EDITION
+   Palette: #0a0a0a black, #00e676 green, #ffffff white
+   Style: Minimal, industrial, gradient, no emojis
+   ============================================================ */
+
+@theme {
+  --color-v-black: #0a0a0a;
+  --color-v-black-2: #111111;
+  --color-v-black-3: #1a1a1a;
+  --color-v-black-4: #222222;
+  --color-v-black-5: #2a2a2a;
+
+  --color-v-green: #00e676;
+  --color-v-green-dim: #00c853;
+  --color-v-green-dark: #00a844;
+  --color-v-green-glow: rgba(0, 230, 118, 0.15);
+
+  --color-v-white: #ffffff;
+  --color-v-gray-100: #e0e0e0;
+  --color-v-gray-200: #b0b0b0;
+  --color-v-gray-300: #808080;
+  --color-v-gray-400: #606060;
+  --color-v-gray-500: #404040;
+  --color-v-gray-600: #303030;
+
+  --color-v-blue: #448aff;
+  --color-v-amber: #ffab00;
+  --color-v-red: #ff1744;
+  --color-v-purple: #b388ff;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ── Base ── */
+@layer base {
+  * { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.06) transparent; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-v-black);
+    color: var(--color-v-gray-200);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Scanline effect */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.005), rgba(0, 0, 255, 0.01));
+    z-index: 9999;
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  ::selection { background: var(--color-v-green); color: #000; }
+}
+
+/* ── Components ── */
+@layer components {
+
+  /* ---- Card ---- */
+  .v-card {
+    background: rgba(17, 17, 17, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  .v-card:hover {
+    border-color: rgba(0, 230, 118, 0.2);
+    background: rgba(26, 26, 26, 0.9);
+    box-shadow: 0 8px 32px -1px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ---- Stat Card ---- */
+  .v-stat {
+    background: linear-gradient(160deg, var(--color-v-black-2) 0%, var(--color-v-black-3) 100%);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .v-stat:hover {
+    border-color: rgba(0,230,118,0.1);
+    transform: translateY(-2px);
+  }
+
+  /* ---- Badges ---- */
+  .badge-disponible {
+    background: rgba(0,230,118,0.08);
+    color: var(--color-v-green);
+    border: 1px solid rgba(0,230,118,0.15);
+    border-radius: 6px;
+  }
+  .badge-reservada {
+    background: rgba(68,138,255,0.08);
+    color: var(--color-v-blue);
+    border: 1px solid rgba(68,138,255,0.15);
+    border-radius: 6px;
+  }
+  .badge-ocupada {
+    background: rgba(255,171,0,0.08);
+    color: var(--color-v-amber);
+    border: 1px solid rgba(255,171,0,0.15);
+    border-radius: 6px;
+  }
+  .badge-mantenimiento {
+    background: rgba(255,23,68,0.08);
+    color: var(--color-v-red);
+    border: 1px solid rgba(255,23,68,0.15);
+    border-radius: 6px;
+  }
+  .badge-limpieza {
+    background: rgba(179,136,255,0.08);
+    color: var(--color-v-purple);
+    border: 1px solid rgba(179,136,255,0.15);
+    border-radius: 6px;
+  }
+
+  /* ---- Buttons ---- */
+  .btn-primary {
+    background: var(--color-v-green);
+    color: #000;
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover {
+    background: var(--color-v-green-dim);
+    box-shadow: 0 0 24px rgba(0,230,118,0.25);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-v-gray-200);
+    padding: 0.6rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.8125rem;
+    transition: all 0.25s ease;
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.15);
+  }
+
+  /* ---- Input ---- */
+  .input-field {
+    background: var(--color-v-black-3);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    color: var(--color-v-white);
+    transition: all 0.2s ease;
+    width: 100%;
+    font-size: 0.8125rem;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: var(--color-v-green);
+    box-shadow: 0 0 0 3px rgba(0,230,118,0.08);
+  }
+  .input-field::placeholder { color: var(--color-v-gray-400); }
+
+  /* ---- Sidebar ---- */
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.875rem;
+    border-radius: 10px;
+    color: var(--color-v-gray-400);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .sidebar-link:hover {
+    color: var(--color-v-gray-100);
+    background: rgba(255,255,255,0.03);
+  }
+  .sidebar-link.active {
+    color: var(--color-v-green);
+    background: rgba(0,230,118,0.05);
+    border-color: rgba(0,230,118,0.08);
+    font-weight: 600;
+  }
+
+  /* ---- Connectivity ---- */
+  .connectivity-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    animation: pulse-dot 2.5s ease-in-out infinite;
+  }
+  .connectivity-dot.online {
+    background: var(--color-v-green);
+    box-shadow: 0 0 8px rgba(0,230,118,0.5);
+  }
+  .connectivity-dot.offline {
+    background: var(--color-v-red);
+    box-shadow: 0 0 8px rgba(255,23,68,0.5);
+  }
+
+  .eco-glow { box-shadow: 0 0 40px rgba(0,230,118,0.06); }
+}
+
+/* ── Weather Animations ── */
+@layer components {
+  /* Rain container */
+  .weather-rain { position: relative; overflow: hidden; }
+  .weather-rain .raindrop {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(68,138,255,0.6));
+    animation: rain-fall linear infinite;
+    opacity: 0.5;
+  }
+
+  /* Sun glow */
+  .weather-sun-glow {
+    position: absolute;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,193,7,0.2) 0%, transparent 70%);
+    animation: sun-pulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Cloud float */
+  .weather-cloud {
+    position: absolute;
+    opacity: 0.1;
+    animation: cloud-drift 12s ease-in-out infinite;
+  }
+
+  /* Lightning */
+  .weather-lightning {
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.08);
+    opacity: 0;
+    animation: lightning-flash 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Snow */
+  .weather-snowflake {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: snow-fall linear infinite;
+  }
+
+  /* Mist */
+  .weather-mist {
+    position: absolute;
+    width: 200%; height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.03) 50%, transparent 100%);
+    animation: mist-drift 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+/* ── Keyframes ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rain-fall {
+  0% { transform: translateY(-20px); opacity: 0; }
+  10% { opacity: 0.6; }
+  100% { transform: translateY(200px); opacity: 0; }
+}
+
+@keyframes sun-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+
+@keyframes cloud-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+
+@keyframes lightning-flash {
+  0%, 90%, 100% { opacity: 0; }
+  92% { opacity: 1; }
+  94% { opacity: 0; }
+  96% { opacity: 0.5; }
+  98% { opacity: 0; }
+}
+
+@keyframes snow-fall {
+  0% { transform: translateY(-10px) translateX(0); opacity: 0; }
+  10% { opacity: 0.5; }
+  100% { transform: translateY(150px) translateX(20px); opacity: 0; }
+}
+
+@keyframes mist-drift {
+  0%, 100% { transform: translateX(-50%); }
+  50% { transform: translateX(0%); }
+}
+
+@keyframes counter-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes loader-bar {
+  0% { width: 0%; }
+  30% { width: 40%; }
+  60% { width: 70%; }
+  80% { width: 85%; }
+  100% { width: 100%; }
+}
+
+/* ── Hyper-Realistic Weather ── */
+@keyframes hyper-rain {
+  0% { transform: translateY(-20px); opacity: 0; }
+  8% { opacity: 1; }
+  100% { transform: translateY(280px); opacity: 0; }
+}
+
+@keyframes hyper-splash {
+  0% { transform: scale(0); opacity: 0.6; }
+  50% { transform: scale(2.5); opacity: 0.3; }
+  100% { transform: scale(4); opacity: 0; }
+}
+
+@keyframes hyper-sun-glow {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.2); opacity: 0.85; }
+}
+
+@keyframes hyper-sun-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes hyper-flare {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.5); }
+}
+
+@keyframes hyper-cloud-1 {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(30px); }
+}
+
+@keyframes hyper-cloud-2 {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-20px); }
+}
+
+@keyframes hyper-cloud-3 {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(15px) translateY(-3px); }
+}
+
+@keyframes hyper-lightning {
+  0%, 88%, 100% { opacity: 0; }
+  90% { opacity: 1; }
+  91% { opacity: 0; }
+  93% { opacity: 0.6; }
+  94% { opacity: 0; }
+}
+
+@keyframes hyper-bolt {
+  0%, 88%, 100% { opacity: 0; transform: scaleY(0.8); }
+  90% { opacity: 1; transform: scaleY(1); }
+  91% { opacity: 0; }
+  93% { opacity: 0.7; transform: scaleY(1); }
+  94% { opacity: 0; }
+}
+
+@keyframes hyper-mist-1 {
+  0%, 100% { transform: translateX(-30%); }
+  50% { transform: translateX(10%); }
+}
+
+@keyframes hyper-mist-2 {
+  0%, 100% { transform: translateX(10%); }
+  50% { transform: translateX(-20%); }
+}
+
+.animate-fade-in { animation: fade-in 0.45s ease-out forwards; }
+.animate-slide-in { animation: slide-in-right 0.35s ease-out forwards; }
+.animate-scale-in { animation: scale-in 0.25s ease-out forwards; }
+.animate-counter { animation: counter-up 0.5s ease-out forwards; }
+
+/* Stagger */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 350ms; }
+.stagger-children > *:nth-child(9) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(10) { animation-delay: 450ms; }
+.stagger-children > *:nth-child(11) { animation-delay: 500ms; }
+.stagger-children > *:nth-child(12) { animation-delay: 550ms; }
