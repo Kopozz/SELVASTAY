@@ -2,7 +2,7 @@
  * CheckoutModal — Resumen de cuenta y confirmación de salida
  */
 import { useState, useEffect } from 'react';
-import { X, Receipt, LogOut, Coffee, Calendar, Home, DollarSign, CheckCircle2 } from 'lucide-react';
+import { X, Receipt, Coffee, Calendar, Home, CheckCircle2 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useConnectivity } from '../hooks/useConnectivity';
 import { demoServicios } from '../lib/demoData';
@@ -49,7 +49,8 @@ export default function CheckoutModal({ reserva, onClose, onConfirm }) {
       await onConfirm(reserva.id, 'checkout');
       toast.success('Check-out completado con éxito');
       onClose();
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       toast.error('Error al procesar el check-out');
     }
   };

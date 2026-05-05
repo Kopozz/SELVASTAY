@@ -1,11 +1,11 @@
 /**
  * ConnectivityBanner — VALVE Edition
  */
-import { Wifi, WifiOff, RefreshCw, Cloud, CloudOff } from 'lucide-react';
+import { WifiOff, RefreshCw, Cloud, CloudOff } from 'lucide-react';
 import { useConnectivity } from '../hooks/useConnectivity';
 
 export default function ConnectivityBanner() {
-  const { isOnline, isSupabaseReachable, isFullyConnected, lastSyncTime, recheckConnection } = useConnectivity();
+  const { isOnline, isFullyConnected, lastSyncTime, recheckConnection } = useConnectivity();
 
   return (
     <div className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[11px] font-medium transition-all duration-300 ${

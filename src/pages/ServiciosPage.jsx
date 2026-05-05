@@ -1,11 +1,11 @@
 /**
  * ServiciosPage — Gestión de servicios adicionales y consumos
  */
-import { useState, useEffect } from 'react';
-import { Utensils, Mountain, Car, Coffee, Plus, Search, Tag, DollarSign } from 'lucide-react';
+import { useState } from 'react';
+import { Utensils, Mountain, Car, Coffee, Plus, Tag, DollarSign } from 'lucide-react';
 import { useReservas } from '../hooks/useReservas';
 import { demoServicios } from '../lib/demoData';
-import toast from 'react-hot-toast';
+
 
 const serviceIcons = {
   restaurante: Utensils,
@@ -16,9 +16,8 @@ const serviceIcons = {
 };
 
 export default function ServiciosPage() {
-  const { reservas, loading: loadingReservas } = useReservas();
-  const [servicios, setServicios] = useState(demoServicios);
-  const [loading, setLoading] = useState(false);
+  const { reservas } = useReservas();
+  const [servicios] = useState(demoServicios);
   const [activeTab, setActiveTab] = useState('all');
 
   const filteredServicios = activeTab === 'all' 

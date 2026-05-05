@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Users, Search, Plus, FileText, Mail, Phone, Globe, Edit2 } from 'lucide-react';
 import { useClientes } from '../hooks/useClientes';
-import { useConnectivity } from '../hooks/useConnectivity';
+
 import EditClienteModal from '../components/EditClienteModal';
 import toast from 'react-hot-toast';
 
@@ -9,7 +9,7 @@ export default function ClientesPage() {
   const { clientes, loading, updateCliente } = useClientes();
   const [search, setSearch] = useState('');
   const [editingCliente, setEditingCliente] = useState(null);
-  const { isFullyConnected } = useConnectivity();
+
 
   const handleUpdateCliente = async (formData) => {
     const { id, ...updateData } = formData;

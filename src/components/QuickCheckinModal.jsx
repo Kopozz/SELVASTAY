@@ -2,7 +2,7 @@
  * QuickCheckinModal — Registro rápido de huésped desde el Mapa
  */
 import { useState } from 'react';
-import { X, UserPlus, Fingerprint, Phone, Mail, Globe, CheckCircle2 } from 'lucide-react';
+import { X, UserPlus, Fingerprint, Phone, Mail, CheckCircle2 } from 'lucide-react';
 import { useReservas } from '../hooks/useReservas';
 import toast from 'react-hot-toast';
 
@@ -35,7 +35,8 @@ export default function QuickCheckinModal({ habitacion, onClose }) {
       await createReservaConCheckin(formData, reservaData);
       toast.success('Huésped registrado y habitación ocupada');
       onClose();
-    } catch (err) {
+    } catch (error) {
+      console.error(error);
       toast.error('Error al registrar huésped');
     } finally {
       setLoading(false);

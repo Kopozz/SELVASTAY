@@ -5,12 +5,12 @@
 import { useState, useMemo, Component } from 'react';
 import { useHabitaciones } from '../hooks/useHabitaciones';
 import { useReservas } from '../hooks/useReservas';
-import { Users, AlertTriangle, LogIn, LogOut, CheckCircle, Info } from 'lucide-react';
+import { Users, AlertTriangle, LogIn, LogOut } from 'lucide-react';
 import { Transition } from '@headlessui/react';
 import QuickCheckinModal from './QuickCheckinModal';
 import RoomActionsModal from './RoomActionsModal';
 import CheckoutModal from './CheckoutModal';
-import toast from 'react-hot-toast';
+
 
 const estadoColors = {
   disponible:    { fill: '#00e676', glow: 'rgba(0, 230, 118, 0.4)', text: '#000' },
@@ -43,7 +43,7 @@ class MapErrorBoundary extends Component {
 }
 
 function LodgeMapInner() {
-  const { habitaciones, updateEstado } = useHabitaciones();
+  const { habitaciones } = useHabitaciones();
   const { reservas, updateEstadoReserva } = useReservas();
   const [hoveredId, setHoveredId] = useState(null);
   const [actionHabitacion, setActionHabitacion] = useState(null);

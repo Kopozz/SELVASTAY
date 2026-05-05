@@ -3,7 +3,7 @@
  * Bento grid, zero emojis, Lucide icons, green/black/white palette
  */
 import { useState, useMemo } from 'react';
-import { Plus, QrCode, Users, CheckCircle2, Clock, TrendingUp, Map as MapIcon, LayoutGrid, ArrowUpRight, Bed } from 'lucide-react';
+import { Plus, QrCode, Users, CheckCircle2, Clock, TrendingUp, Map as MapIcon, LayoutGrid, ArrowUpRight } from 'lucide-react';
 import { useHabitaciones } from '../hooks/useHabitaciones';
 import { useReservas } from '../hooks/useReservas';
 import HabitacionCard from '../components/HabitacionCard';
@@ -18,11 +18,10 @@ export default function DashboardPage() {
   const { reservas } = useReservas();
   const [viewMode, setViewMode] = useState('map');
   const [showQR, setShowQR] = useState(false);
-  const [showRoomSelect, setShowRoomSelect] = useState(false);
 
   const handleNuevoCheckin = () => {
     setViewMode('map');
-    setShowRoomSelect(true);
+
     toast('Seleccione una habitación libre en el mapa', {
       icon: '🏨',
       style: { background: '#111', color: '#fff', fontSize: '12px', border: '1px solid #222' }

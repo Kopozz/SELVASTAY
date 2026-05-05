@@ -42,7 +42,7 @@ export function useConnectivity() {
       }
 
       return reachable;
-    } catch (err) {
+    } catch {
       setIsSupabaseReachable(false);
       return false;
     }
