@@ -19,14 +19,17 @@ const tipoIcons = {
   glamping: Tent,
 };
 
-export default function HabitacionCard({ habitacion, onStatusChange }) {
+export default function HabitacionCard({ habitacion, onStatusChange, onClick }) {
   const { id, numero, tipo, precio_noche, estado, capacidad } = habitacion;
   const config = estadoConfig[estado] || estadoConfig.disponible;
   const StatusIcon = config.icon;
   const TipoIcon = tipoIcons[tipo] || Bed;
 
   return (
-    <div className="v-card p-4 group relative">
+    <div 
+      className="v-card p-4 group relative cursor-pointer hover:border-[rgba(0,230,118,0.25)] hover:shadow-[0_0_20px_rgba(0,230,118,0.02)] transition-all duration-300"
+      onClick={onClick}
+    >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <TipoIcon size={16} className="text-[var(--color-v-gray-400)]" />

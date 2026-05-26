@@ -11,11 +11,14 @@ import HabitacionCard from '../components/HabitacionCard';
 import LodgeMap from '../components/LodgeMap';
 import WeatherWidget from '../components/WeatherWidget';
 import QRCheckin from '../components/QRCheckin';
+import QuickCheckinModal from '../components/QuickCheckinModal';
+import RoomActionsModal from '../components/RoomActionsModal';
+import CheckoutModal from '../components/CheckoutModal';
 import toast from 'react-hot-toast';
 
 export default function DashboardPage() {
   const { habitaciones, updateEstado } = useHabitaciones();
-  const { reservas } = useReservas();
+  const { reservas, updateEstadoReserva } = useReservas();
   const { 
     businessName, 
     businessType, 
@@ -25,8 +28,17 @@ export default function DashboardPage() {
     getClientName 
   } = useBusinessConfig();
   
-  const [viewMode, setViewMode] = useState('grid'); // Cambiado a 'grid' por defecto para dar mejor soporte a coworking/canchas
+  const [viewMode, setViewMode] = useState('grid'); 
   const [showQR, setShowQR] = useState(false);
+  const [actionHabitacion, setActionHabitacion] = useState(null);
+  const [selectedHabitacion, setSelectedHabitacion] = useState(null);
+  const [checkoutReserva, setCheckoutReserva] = useState(null);
+
+  const activeReservas = useMemo(() => {
+    const map = {};
+    reservas.forEach(r => { if (r.estado === 'checkin') map[r.habitacion_id] = r; });
+    return map;
+  }, [reservas]);
 
   const handleNuevoCheckin = () => {
     setViewMode('grid');
@@ -209,10 +221,10 @@ export default function DashboardPage() {
                       key={h.id} 
                       habitacion={{
                         ...h,
-                        // Traducir dinámicamente tipo de unidad para que no rompa la coherencia
                         tipo: h.tipo === 'simple' ? `Simple` : h.tipo === 'doble' ? `Doble` : h.tipo === 'suite' ? `Suite Premium` : h.tipo
                       }} 
                       onStatusChange={handleStatusChange}
+                      onClick={() => setActionHabitacion(h)}
                     />
                   ))}
                 </div>
@@ -273,6 +285,30 @@ export default function DashboardPage() {
 
       {/* QR Modal */}
       {showQR && <QRCheckin onClose={() => setShowQR(false)} />}
+
+      {/* Operaciones de habitación desde el Grid */}
+      {actionHabitacion && (
+        <RoomActionsModal 
+          habitacion={actionHabitacion}
+          reserva={activeReservas[actionHabitacion.id]}
+          onCheckin={setSelectedHabitacion}
+          onCheckout={setCheckoutReserva}
+          onClose={() => setActionHabitacion(null)}
+        />
+      )}
+      {selectedHabitacion && (
+        <QuickCheckinModal 
+          habitacion={selectedHabitacion} 
+          onClose={() => setSelectedHabitacion(null)} 
+        />
+      )}
+      {checkoutReserva && (
+        <CheckoutModal 
+          reserva={checkoutReserva}
+          onClose={() => setCheckoutReserva(null)}
+          onConfirm={(id, estado) => updateEstadoReserva(id, estado)}
+        />
+      )}
     </div>
   );
 }
