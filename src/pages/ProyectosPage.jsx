@@ -203,7 +203,7 @@ export default function ProyectosPage() {
               <ListTodo size={18} />
             </div>
             <div>
-              <p className="text-[var(--color-v-gray-400)] text-[9px] font-bold uppercase tracking-wider">Tareas Totales</p>
+              <p className="text-[var(--color-v-gray-400)] text-xs font-semibold uppercase tracking-wider">Tareas Totales</p>
               <h3 className="text-xl font-black text-[var(--color-v-white)] mt-0.5">{kpis.total}</h3>
             </div>
           </div>
@@ -218,7 +218,7 @@ export default function ProyectosPage() {
               <Clock size={18} />
             </div>
             <div>
-              <p className="text-[var(--color-v-gray-400)] text-[9px] font-bold uppercase tracking-wider">Tareas Activas</p>
+              <p className="text-[var(--color-v-gray-400)] text-xs font-semibold uppercase tracking-wider">Tareas Activas</p>
               <h3 className="text-xl font-black text-[var(--color-v-white)] mt-0.5">{kpis.activas}</h3>
             </div>
           </div>
@@ -233,7 +233,7 @@ export default function ProyectosPage() {
               <AlertTriangle size={18} />
             </div>
             <div>
-              <p className="text-[var(--color-v-gray-400)] text-[9px] font-bold uppercase tracking-wider">Altas Criticas</p>
+              <p className="text-[var(--color-v-gray-400)] text-xs font-semibold uppercase tracking-wider">Altas Criticas</p>
               <h3 className="text-xl font-black text-[var(--color-v-white)] mt-0.5">{kpis.altas}</h3>
             </div>
           </div>
@@ -248,7 +248,7 @@ export default function ProyectosPage() {
               <TrendingUp size={18} />
             </div>
             <div className="w-full">
-              <p className="text-[var(--color-v-gray-400)] text-[9px] font-bold uppercase tracking-wider">Completado</p>
+              <p className="text-[var(--color-v-gray-400)] text-xs font-semibold uppercase tracking-wider">Completado</p>
               <div className="flex items-center gap-2 mt-0.5">
                 <span className="text-xl font-black text-[var(--color-v-white)]">{kpis.avance}%</span>
                 <div className="flex-1 h-1.5 rounded-full bg-[var(--color-v-black-4)] overflow-hidden">
@@ -307,9 +307,9 @@ export default function ProyectosPage() {
                       col === 'Planificación' ? 'bg-[var(--color-v-blue)]' :
                       col === 'Ejecución' ? 'bg-[var(--color-v-amber)]' : 'bg-[var(--color-v-green)]'
                     }`} />
-                    <h4 className="text-xs font-bold text-[var(--color-v-white)] uppercase tracking-wider">{col}</h4>
+                    <h4 className="text-sm font-bold text-[var(--color-v-white)] uppercase tracking-wider">{col}</h4>
                   </div>
-                  <span className="text-[10px] font-bold bg-[var(--color-v-black-3)] px-1.5 py-0.5 rounded text-[var(--color-v-gray-400)]">
+                  <span className="text-xs font-bold bg-[var(--color-v-black-3)] px-2 py-0.5 rounded text-[var(--color-v-gray-400)]">
                     {colTasks.length}
                   </span>
                 </div>
@@ -320,7 +320,7 @@ export default function ProyectosPage() {
                     <div key={task.id} className="v-card p-3.5 bg-[var(--color-v-black-3)] hover:border-[rgba(0,230,118,0.25)] transition-all flex flex-col group border-[rgba(255,255,255,0.02)]">
                       {/* Priority and Actions */}
                       <div className="flex justify-between items-center mb-2">
-                        <span className={`text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider ${
+                        <span className={`text-xs font-black px-2 py-0.5 rounded uppercase tracking-wider ${
                           task.prioridad === 'Alta' ? 'bg-[rgba(255,23,68,0.1)] text-[var(--color-v-red)]' :
                           task.prioridad === 'Media' ? 'bg-[rgba(255,171,0,0.1)] text-[var(--color-v-amber)]' :
                           'bg-[rgba(68,138,255,0.1)] text-[var(--color-v-blue)]'
@@ -330,17 +330,17 @@ export default function ProyectosPage() {
 
                         <button 
                           onClick={() => deleteTask(task.id)}
-                          className="opacity-0 group-hover:opacity-100 text-[10px] text-[var(--color-v-red)] font-semibold hover:underline transition-opacity cursor-pointer"
+                          className="opacity-0 group-hover:opacity-100 text-xs text-[var(--color-v-red)] font-semibold hover:underline transition-opacity cursor-pointer"
                         >
                           Eliminar
                         </button>
                       </div>
 
                       {/* Title */}
-                      <h5 className="text-xs font-bold text-[var(--color-v-white)] leading-snug mb-1.5">{task.titulo}</h5>
+                      <h5 className="text-sm font-bold text-[var(--color-v-white)] leading-snug mb-1.5">{task.titulo}</h5>
                       
                       {/* Description */}
-                      <p className="text-[10px] text-[var(--color-v-gray-400)] leading-relaxed line-clamp-3 mb-3">
+                      <p className="text-xs text-[var(--color-v-gray-400)] leading-relaxed line-clamp-3 mb-3">
                         {task.descripcion || 'Sin descripción.'}
                       </p>
 
@@ -348,7 +348,7 @@ export default function ProyectosPage() {
                       <div className="mt-auto space-y-2">
                         {/* Progress Bar */}
                         <div className="space-y-1">
-                          <div className="flex justify-between text-[8px] font-semibold text-[var(--color-v-gray-500)]">
+                          <div className="flex justify-between text-[10px] font-semibold text-[var(--color-v-gray-500)]">
                             <span>Progreso</span>
                             <span>{task.progreso}%</span>
                           </div>
@@ -358,7 +358,7 @@ export default function ProyectosPage() {
                         </div>
 
                         {/* Assignee & Dates */}
-                        <div className="flex items-center justify-between text-[9px] text-[var(--color-v-gray-500)] font-medium pt-1.5 border-t border-[rgba(255,255,255,0.02)]">
+                        <div className="flex items-center justify-between text-xs text-[var(--color-v-gray-500)] font-medium pt-1.5 border-t border-[rgba(255,255,255,0.02)]">
                           <div className="flex items-center gap-1 text-[var(--color-v-gray-300)]">
                             <User size={10} />
                             <span className="truncate max-w-[80px]">{task.responsable}</span>
@@ -407,7 +407,7 @@ export default function ProyectosPage() {
                     setSelectedColumnForTask(col);
                     setShowTaskModal(true);
                   }}
-                  className="w-full mt-3 p-2 rounded-lg bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.04)] text-[10px] font-bold text-[var(--color-v-gray-300)] hover:text-[var(--color-v-white)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="w-full mt-3 p-2.5 rounded-lg bg-[rgba(255,255,255,0.02)] hover:bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.04)] text-xs font-bold text-[var(--color-v-gray-300)] hover:text-[var(--color-v-white)] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Plus size={12} />
                   <span>Añadir Tarea</span>

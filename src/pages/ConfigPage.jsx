@@ -222,7 +222,7 @@ export default function ConfigPage() {
                       </div>
                       
                       {/* Vocabulary Preview */}
-                      <div className="text-[9px] text-[var(--color-v-gray-500)] space-y-0.5 border-t border-[rgba(255,255,255,0.02)] pt-2 mt-1">
+                      <div className="text-xs text-[var(--color-v-gray-500)] space-y-0.5 border-t border-[rgba(255,255,255,0.02)] pt-2 mt-1">
                         <div>Unidad: <span className="text-[var(--color-v-gray-300)] font-semibold">{type.unit}</span></div>
                         <div>Usuario: <span className="text-[var(--color-v-gray-300)] font-semibold">{type.client}</span></div>
                         <div>Trámite: <span className="text-[var(--color-v-gray-300)] font-semibold">{type.booking}</span></div>
@@ -235,12 +235,12 @@ export default function ConfigPage() {
 
             {/* Módulos Activos Switches */}
             <div className="space-y-3">
-              <label className="block text-[10px] font-bold uppercase tracking-wider text-[var(--color-v-gray-400)]">Módulos Habilitados (Modular MVP)</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-[var(--color-v-gray-400)]">Módulos Habilitados (Modular MVP)</label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="v-card p-3.5 bg-[var(--color-v-black-3)] flex items-center justify-between border-[rgba(255,255,255,0.02)]">
                   <div>
                     <h5 className="text-xs font-bold text-[var(--color-v-white)]">Clientes</h5>
-                    <p className="text-[8px] text-[var(--color-v-gray-500)] mt-0.5">Directorio e historial de usuarios.</p>
+                    <p className="text-xs text-[var(--color-v-gray-500)] mt-0.5">Directorio e historial de usuarios.</p>
                   </div>
                   <button 
                     type="button" 
@@ -258,7 +258,7 @@ export default function ConfigPage() {
                 <div className="v-card p-3.5 bg-[var(--color-v-black-3)] flex items-center justify-between border-[rgba(255,255,255,0.02)]">
                   <div>
                     <h5 className="text-xs font-bold text-[var(--color-v-white)]">Servicios</h5>
-                    <p className="text-[8px] text-[var(--color-v-gray-500)] mt-0.5">Consumos y cobros adicionales.</p>
+                    <p className="text-xs text-[var(--color-v-gray-500)] mt-0.5">Consumos y cobros adicionales.</p>
                   </div>
                   <button 
                     type="button" 
@@ -276,7 +276,7 @@ export default function ConfigPage() {
                 <div className="v-card p-3.5 bg-[var(--color-v-black-3)] flex items-center justify-between border-[rgba(255,255,255,0.02)]">
                   <div>
                     <h5 className="text-xs font-bold text-[var(--color-v-white)]">Proyectos</h5>
-                    <p className="text-[8px] text-[var(--color-v-gray-500)] mt-0.5">Gestor Kanban y Scrum del equipo.</p>
+                    <p className="text-xs text-[var(--color-v-gray-500)] mt-0.5">Gestor Kanban y Scrum del equipo.</p>
                   </div>
                   <button 
                     type="button" 
