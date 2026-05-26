@@ -1,18 +1,20 @@
 /**
  * WeatherWidget — Clima Amazónico e Interactivo de Alto Impacto
- * Implementa Open-Meteo API (sin necesidad de API keys) con fallback.
+ * Implementa Open-Meteo API (sin necesidad de API keys) con detección de Día/Noche.
  * Cuenta con efectos climáticos premium hiperrealistas dibujados en Canvas:
- * - Clear: Sol giratorio con halo de luz y lens flares reactivos.
- * - Rain/Drizzle: Gotas de lluvia realistas con salpicaduras (splashes) en el borde inferior.
- * - Thunderstorm: Destellos de luz y relámpagos fractales dinámicos.
- * - Clouds: Nubes con gradiente tridimensional flotando a distintas velocidades.
- * - Mist/Fog: Ondas de niebla fluidas que oscilan con ruido sinusoidal.
+ * - DÍA Despejado: Sol giratorio con halo de luz y lens flares reactivos.
+ * - NOCHE Despejada: Luna creciente de alta precisión matemática con cielo estrellado titilante.
+ * - Lluvia/Llovizna: Gotas de lluvia realistas con salpicaduras (splashes) en el borde inferior.
+ * - Tormenta Eléctrica: Destellos de luz y relámpagos fractales dinámicos.
+ * - Nublado: Nubes con gradiente tridimensional flotando a distintas velocidades.
+ * - Niebla/Mist: Ondas de niebla fluidas que oscilan con ruido sinusoidal.
  * Presenta un diseño Bento Grid premium al estilo Apple Weather con pronóstico de 4 días y selector de ciudades.
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Cloud, Sun, CloudRain, CloudLightning, CloudDrizzle, CloudFog, 
-  Thermometer, Droplets, Wind, MapPin, Calendar, Umbrella, CloudSun 
+  Thermometer, Droplets, Wind, MapPin, Calendar, Umbrella, CloudSun,
+  Moon, CloudMoon
 } from 'lucide-react';
 
 const CITIES = [
@@ -24,41 +26,68 @@ const CITIES = [
 ];
 
 const weatherCodes = {
-  0: { main: 'clear', description: 'Cielo Despejado', icon: Sun },
-  1: { main: 'clouds', description: 'Principalmente Despejado', icon: CloudSun },
-  2: { main: 'clouds', description: 'Parcialmente Nublado', icon: CloudSun },
-  3: { main: 'clouds', description: 'Nublado', icon: Cloud },
-  45: { main: 'mist', description: 'Neblina Húmeda', icon: CloudFog },
-  48: { main: 'mist', description: 'Niebla Densa', icon: CloudFog },
-  51: { main: 'drizzle', description: 'Llovizna Leve', icon: CloudDrizzle },
-  53: { main: 'drizzle', description: 'Llovizna Moderada', icon: CloudDrizzle },
-  55: { main: 'drizzle', description: 'Llovizna Intensa', icon: CloudDrizzle },
-  61: { main: 'rain', description: 'Lluvia Ligera', icon: CloudRain },
-  63: { main: 'rain', description: 'Lluvia Moderada', icon: CloudRain },
-  65: { main: 'rain', description: 'Lluvia Intensa', icon: CloudRain },
-  80: { main: 'rain', description: 'Chubascos de Lluvia', icon: CloudRain },
-  81: { main: 'rain', description: 'Chubascos Fuertes', icon: CloudRain },
-  95: { main: 'thunderstorm', description: 'Tormenta Eléctrica', icon: CloudLightning },
-  96: { main: 'thunderstorm', description: 'Tormenta con Granizo Leve', icon: CloudLightning },
-  99: { main: 'thunderstorm', description: 'Tormenta Eléctrica Severa', icon: CloudLightning },
+  0: { main: 'clear', descriptionDay: 'Cielo Despejado', descriptionNight: 'Noche Despejada', iconDay: Sun, iconNight: Moon },
+  1: { main: 'clouds', descriptionDay: 'Principalmente Despejado', descriptionNight: 'Noche Despejada', iconDay: CloudSun, iconNight: CloudMoon },
+  2: { main: 'clouds', descriptionDay: 'Parcialmente Nublado', descriptionNight: 'Noche Nublada', iconDay: CloudSun, iconNight: CloudMoon },
+  3: { main: 'clouds', descriptionDay: 'Nublado', descriptionNight: 'Noche Cubierta', iconDay: Cloud, iconNight: Cloud },
+  45: { main: 'mist', descriptionDay: 'Neblina Húmeda', descriptionNight: 'Neblina Nocturna', iconDay: CloudFog, iconNight: CloudFog },
+  48: { main: 'mist', descriptionDay: 'Niebla Densa', descriptionNight: 'Niebla Densa', iconDay: CloudFog, iconNight: CloudFog },
+  51: { main: 'drizzle', descriptionDay: 'Llovizna Leve', descriptionNight: 'Llovizna Leve', iconDay: CloudDrizzle, iconNight: CloudDrizzle },
+  53: { main: 'drizzle', descriptionDay: 'Llovizna Moderada', descriptionNight: 'Llovizna Moderada', iconDay: CloudDrizzle, iconNight: CloudDrizzle },
+  55: { main: 'drizzle', descriptionDay: 'Llovizna Intensa', descriptionNight: 'Llovizna Intensa', iconDay: CloudDrizzle, iconNight: CloudDrizzle },
+  61: { main: 'rain', descriptionDay: 'Lluvia Ligera', descriptionNight: 'Lluvia Ligera', iconDay: CloudRain, iconNight: CloudRain },
+  63: { main: 'rain', descriptionDay: 'Lluvia Moderada', descriptionNight: 'Lluvia Nocturna', iconDay: CloudRain, iconNight: CloudRain },
+  65: { main: 'rain', descriptionDay: 'Lluvia Intensa', descriptionNight: 'Lluvia Intensa', iconDay: CloudRain, iconNight: CloudRain },
+  80: { main: 'rain', descriptionDay: 'Chubascos de Lluvia', descriptionNight: 'Chubascos de Lluvia', iconDay: CloudRain, iconNight: CloudRain },
+  81: { main: 'rain', descriptionDay: 'Chubascos Fuertes', descriptionNight: 'Chubascos Fuertes', iconDay: CloudRain, iconNight: CloudRain },
+  95: { main: 'thunderstorm', descriptionDay: 'Tormenta Eléctrica', descriptionNight: 'Tormenta Eléctrica', iconDay: CloudLightning, iconNight: CloudLightning },
+  96: { main: 'thunderstorm', descriptionDay: 'Tormenta con Granizo', descriptionNight: 'Tormenta con Granizo', iconDay: CloudLightning, iconNight: CloudLightning },
+  99: { main: 'thunderstorm', descriptionDay: 'Tormenta Eléctrica Severa', descriptionNight: 'Tormenta Severa', iconDay: CloudLightning, iconNight: CloudLightning },
 };
 
-const activitySuggestions = {
+const activitySuggestionsDay = {
   clear: ['Caminata por senderos', 'Canopy y tirolesa', 'Visita a cataratas', 'Piscina del Lodge'],
   clouds: ['Tour por la ciudad', 'Avistamiento de aves', 'Paseo en bote', 'Senderismo fotográfico'],
-  rain: ['Spa y masajes amazónicos', 'Taller de chocolate', 'Degustación de café local', 'Lectura de mitos'],
-  thunderstorm: ['Relajación en hamaca', 'Clase de cocina regional', 'Juegos de mesa', 'Tragos exóticos en el bar'],
+  rain: ['Spa y masajes amazónicos', 'Taller de chocolate', 'Degustación de café local', 'Lectura en la biblioteca'],
+  thunderstorm: ['Relajación en hamaca', 'Clase de cocina regional', 'Juegos de mesa', 'Tragos en el bar lounge'],
   drizzle: ['Visita al museo regional', 'Compras de artesanías', 'Tour gastronómico', 'Visita a orquidearios'],
   mist: ['Fotografía de amanecer', 'Yoga en el mirador', 'Meditación guiada', 'Observación de flora'],
 };
 
-// Canvas weather renderer con efectos avanzados
-function useWeatherCanvas(canvasRef, weatherMain) {
+const activitySuggestionsNight = {
+  clear: ['Cena a la luz de las velas', 'Fogata bajo las estrellas', 'Observación de constelaciones', 'Tragos exóticos en el bar'],
+  clouds: ['Música en vivo en recepción', 'Cena buffet amazónica', 'Cine nocturno en el lodge', 'Degustación de licores regionales'],
+  rain: ['Taller nocturno de chocolate', 'Degustación de infusiones calientes', 'Lectura de mitos selváticos', 'Spa nocturno relajante'],
+  thunderstorm: ['Historias y leyendas del lodge', 'Sesión de billar y juegos', 'Cócteles amazónicos', 'Descanso con sonido de lluvia'],
+  drizzle: ['Cena gourmet techada', 'Música acústica en el lobby', 'Juegos de salón', 'Cata de cervezas artesanales'],
+  mist: ['Meditación nocturna', 'Conversaciones en el fogón', 'Cena romántica', 'Spa y jacuzzi techado'],
+};
+
+// Canvas weather renderer con efectos avanzados de día y noche
+function useWeatherCanvas(canvasRef, weatherMain, isNight) {
   const animRef = useRef(null);
   const particlesRef = useRef([]);
 
-  const initParticles = useCallback((type, width, height) => {
+  const initParticles = useCallback((type, width, height, night) => {
     const particles = [];
+    
+    // 1. INICIALIZAR ESTRELLAS TITILANTES (si es de noche)
+    if (night) {
+      const starCount = type === 'clear' ? 55 : type === 'clouds' ? 30 : 12; // Menos estrellas si está nublado o llueve
+      for (let i = 0; i < starCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * (height * 0.65),
+          size: 0.4 + Math.random() * 1.2,
+          opacity: Math.random(),
+          fadeSpeed: 0.008 + Math.random() * 0.015,
+          fadeDir: Math.random() > 0.5 ? 1 : -1,
+          isStar: true
+        });
+      }
+    }
+
+    // 2. PARTÍCULAS OPERATIVAS DEL CLIMA
     if (type === 'rain' || type === 'thunderstorm') {
       // Gotas de lluvia
       for (let i = 0; i < 70; i++) {
@@ -87,38 +116,39 @@ function useWeatherCanvas(canvasRef, weatherMain) {
       }
     } else if (type === 'clouds') {
       // Nubes volumétricas
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 5; i++) {
         particles.push({
           x: Math.random() * width,
-          y: 20 + Math.random() * (height * 0.35),
+          y: 20 + Math.random() * (height * 0.32),
           radiusX: 35 + Math.random() * 45,
           radiusY: 20 + Math.random() * 25,
-          speed: 0.15 + Math.random() * 0.25,
-          opacity: 0.04 + Math.random() * 0.06,
+          speed: 0.12 + Math.random() * 0.22,
+          opacity: night ? (0.02 + Math.random() * 0.03) : (0.04 + Math.random() * 0.06), // Nubes más tenues y oscuras de noche
         });
       }
     } else if (type === 'clear') {
-      // Sol con lente y rayos dinámicos
+      // Elemento astronómico principal (Sol en día, Luna en noche)
       particles.push({
         x: width * 0.82,
         y: height * 0.20,
-        radius: 35,
-        glow: 75,
+        radius: night ? 18 : 35,
+        glow: night ? 45 : 75,
         angle: 0,
-        rays: 10,
+        rays: night ? 0 : 10,
         pulseDir: 1,
-        pulseVal: 0
+        pulseVal: 0,
+        isAstro: true
       });
     } else if (type === 'mist' || type === 'fog') {
       // Neblina en ondas sinusoidales
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 4; i++) {
         particles.push({
-          y: 30 + (i * (height / 6)),
+          y: 30 + (i * (height / 5)),
           amplitude: 8 + Math.random() * 12,
           period: 150 + Math.random() * 100,
           phase: Math.random() * 100,
-          speed: 0.4 + Math.random() * 0.6,
-          opacity: 0.02 + Math.random() * 0.04,
+          speed: 0.3 + Math.random() * 0.5,
+          opacity: night ? 0.015 + Math.random() * 0.025 : 0.02 + Math.random() * 0.04,
           height: 15 + Math.random() * 20
         });
       }
@@ -142,13 +172,13 @@ function useWeatherCanvas(canvasRef, weatherMain) {
     const height = canvas.height;
 
     const type = (weatherMain || 'clouds').toLowerCase();
-    particlesRef.current = initParticles(type, width, height);
+    particlesRef.current = initParticles(type, width, height, isNight);
     
     let flashActive = false;
     let flashFrame = 0;
     let lightningBranches = [];
 
-    // Generador de rayo fractal
+    // Generador de rayo fractal para tormentas
     const generateLightning = (startX, startY) => {
       const branches = [];
       let currX = startX;
@@ -156,18 +186,17 @@ function useWeatherCanvas(canvasRef, weatherMain) {
       
       branches.push({ x1: currX, y1: currY, x2: currX, y2: currY });
 
-      while (currY < height - 10) {
-        const nextX = currX + (Math.random() - 0.5) * 45;
+      while (currY < height - 12) {
+        const nextX = currX + (Math.random() - 0.5) * 50;
         const nextY = currY + Math.random() * 25 + 10;
         branches.push({ x1: currX, y1: currY, x2: nextX, y2: nextY });
         
-        // Ramificaciones menores opcionales
-        if (Math.random() < 0.15) {
+        if (Math.random() < 0.18) {
           branches.push({
             x1: currX,
             y1: currY,
-            x2: currX + (Math.random() - 0.5) * 60,
-            y2: currY + Math.random() * 20 + 5,
+            x2: currX + (Math.random() - 0.5) * 70,
+            y2: currY + Math.random() * 18 + 5,
             isSub: true
           });
         }
@@ -182,11 +211,91 @@ function useWeatherCanvas(canvasRef, weatherMain) {
       ctx.clearRect(0, 0, width, height);
       const ps = particlesRef.current;
 
-      // 1. EFECTO LLUVIA Y TORMENTA
+      // 1. DIBUJAR ESTRELLAS TITILANTES (si es de noche)
+      ps.forEach(p => {
+        if (p.isStar) {
+          p.opacity += p.fadeSpeed * p.fadeDir;
+          if (p.opacity > 0.95) p.fadeDir = -1;
+          if (p.opacity < 0.05) p.fadeDir = 1;
+          
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
+
+      // 2. DIBUJAR EFECTO ASTRONÓMICO PRINCIPAL (Sol/Luna)
+      const astro = ps.find(p => p.isAstro);
+      if (astro) {
+        astro.angle += 0.003;
+        astro.pulseVal += 0.03 * astro.pulseDir;
+        if (astro.pulseVal > 4 || astro.pulseVal < -4) astro.pulseDir *= -1;
+        const currentGlow = astro.glow + astro.pulseVal;
+
+        if (isNight) {
+          // --- LUNA CRECIENTE PREMIUM ---
+          // Halo de luz plateado místico
+          const moonGrad = ctx.createRadialGradient(astro.x, astro.y, 0, astro.x, astro.y, currentGlow);
+          moonGrad.addColorStop(0, 'rgba(210, 225, 255, 0.20)');
+          moonGrad.addColorStop(0.5, 'rgba(180, 200, 255, 0.06)');
+          moonGrad.addColorStop(1, 'rgba(180, 200, 255, 0)');
+          ctx.fillStyle = moonGrad;
+          ctx.beginPath();
+          ctx.arc(astro.x, astro.y, currentGlow, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Dibujar luna creciente usando globalCompositeOperation para un corte perfecto
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(astro.x, astro.y, astro.radius, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(240, 245, 255, 0.92)';
+          ctx.shadowColor = 'rgba(210, 230, 255, 0.85)';
+          ctx.shadowBlur = 12;
+          ctx.fill();
+          ctx.restore();
+
+          // Cortar para formar la creciente
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.beginPath();
+          ctx.arc(astro.x - (astro.radius * 0.42), astro.y - (astro.radius * 0.18), astro.radius, 0, Math.PI * 2);
+          ctx.fillStyle = '#000';
+          ctx.fill();
+          ctx.globalCompositeOperation = 'source-over'; // Restaurar modo normal
+          
+        } else {
+          // --- SOL DESPEJADO ---
+          // Halo de calor dinámico
+          const sunGrad = ctx.createRadialGradient(astro.x, astro.y, 0, astro.x, astro.y, currentGlow);
+          sunGrad.addColorStop(0, 'rgba(255, 185, 45, 0.22)');
+          sunGrad.addColorStop(0.4, 'rgba(255, 150, 30, 0.08)');
+          sunGrad.addColorStop(1, 'rgba(255, 100, 10, 0)');
+          
+          ctx.fillStyle = sunGrad;
+          ctx.beginPath();
+          ctx.arc(astro.x, astro.y, currentGlow, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Rayos del sol giratorios
+          for (let i = 0; i < astro.rays; i++) {
+            const rayAngle = astro.angle + (Math.PI * 2 / astro.rays) * i;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(255, 175, 40, 0.12)`;
+            ctx.lineWidth = 1.8;
+            const startDist = astro.radius + 3;
+            const endDist = currentGlow - 12;
+            ctx.moveTo(astro.x + Math.cos(rayAngle) * startDist, astro.y + Math.sin(rayAngle) * startDist);
+            ctx.lineTo(astro.x + Math.cos(rayAngle) * endDist, astro.y + Math.sin(rayAngle) * endDist);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // 3. CLIMA PARTICULAS Y DETALLES
       if (type === 'rain' || type === 'thunderstorm' || type === 'drizzle') {
         ps.forEach(p => {
+          if (p.isStar) return;
           if (p.splash) {
-            // Dibujar salpicadura (splash) en la base
             ctx.beginPath();
             ctx.strokeStyle = `rgba(130, 185, 255, ${p.opacity * 0.6})`;
             ctx.lineWidth = p.width * 0.7;
@@ -201,10 +310,9 @@ function useWeatherCanvas(canvasRef, weatherMain) {
             }
           } else {
             ctx.beginPath();
-            // Lluvia brillante e inclinada por viento
             const grad = ctx.createLinearGradient(p.x, p.y, p.x - 3, p.y + p.length);
-            grad.addColorStop(0, `rgba(150, 195, 255, ${p.opacity * 0.2})`);
-            grad.addColorStop(1, `rgba(200, 225, 255, ${p.opacity})`);
+            grad.addColorStop(0, `rgba(150, 195, 255, ${p.opacity * 0.25})`);
+            grad.addColorStop(1, `rgba(200, 225, 255, ${p.opacity * 1.2})`);
             
             ctx.strokeStyle = grad;
             ctx.lineWidth = p.width;
@@ -213,9 +321,8 @@ function useWeatherCanvas(canvasRef, weatherMain) {
             ctx.stroke();
 
             p.y += p.speed;
-            p.x -= 0.5; // Inclinación
+            p.x -= 0.5;
 
-            // Colisión con el piso de la tarjeta
             if (p.y + p.length >= height - 4) {
               if (type !== 'drizzle' && Math.random() < 0.6) {
                 p.splash = true;
@@ -229,25 +336,23 @@ function useWeatherCanvas(canvasRef, weatherMain) {
           }
         });
 
-        // Relámpagos fractales hiperrealistas
+        // Relámpagos fractales
         if (type === 'thunderstorm') {
           if (!flashActive && Math.random() < 0.007) {
             flashActive = true;
             flashFrame = 0;
-            lightningBranches = generateLightning(width * 0.2 + Math.random() * (width * 0.5), 0);
+            lightningBranches = generateLightning(width * 0.25 + Math.random() * (width * 0.5), 0);
           }
 
           if (flashActive) {
             flashFrame++;
-            // Destello general en el fondo
-            const flashIntensity = flashFrame < 5 ? 0.35 : flashFrame < 15 ? 0.15 : 0.05;
+            const flashIntensity = flashFrame < 5 ? 0.38 : flashFrame < 15 ? 0.18 : 0.06;
             ctx.fillStyle = `rgba(225, 235, 255, ${flashIntensity})`;
             ctx.fillRect(0, 0, width, height);
 
-            // Dibujar el rayo fractal
             ctx.beginPath();
-            ctx.strokeStyle = 'rgba(235, 245, 255, 0.95)';
-            ctx.shadowColor = 'rgba(120, 175, 255, 0.9)';
+            ctx.strokeStyle = 'rgba(235, 245, 255, 0.96)';
+            ctx.shadowColor = 'rgba(120, 175, 255, 0.95)';
             ctx.shadowBlur = 18;
             
             lightningBranches.forEach(b => {
@@ -256,22 +361,26 @@ function useWeatherCanvas(canvasRef, weatherMain) {
               ctx.lineTo(b.x2, b.y2);
             });
             ctx.stroke();
-            ctx.shadowBlur = 0; // Reset sombra
+            ctx.shadowBlur = 0;
 
-            if (flashFrame > 22) {
-              flashActive = false;
-            }
+            if (flashFrame > 22) flashActive = false;
           }
         }
       } 
-      // 2. EFECTO NUBES VOLUMÉTRICAS
       else if (type === 'clouds') {
         ps.forEach(p => {
+          if (p.isStar) return;
           ctx.beginPath();
           const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radiusX);
-          grad.addColorStop(0, `rgba(230, 235, 245, ${p.opacity})`);
-          grad.addColorStop(0.6, `rgba(185, 195, 215, ${p.opacity * 0.7})`);
-          grad.addColorStop(1, 'rgba(180, 190, 210, 0)');
+          
+          if (isNight) {
+            grad.addColorStop(0, `rgba(130, 140, 165, ${p.opacity})`);
+            grad.addColorStop(0.6, `rgba(80, 90, 115, ${p.opacity * 0.6})`);
+          } else {
+            grad.addColorStop(0, `rgba(230, 235, 245, ${p.opacity})`);
+            grad.addColorStop(0.6, `rgba(185, 195, 215, ${p.opacity * 0.7})`);
+          }
+          grad.addColorStop(1, 'rgba(80, 90, 110, 0)');
           
           ctx.fillStyle = grad;
           ctx.ellipse(p.x, p.y, p.radiusX, p.radiusY, 0, 0, Math.PI * 2);
@@ -281,59 +390,14 @@ function useWeatherCanvas(canvasRef, weatherMain) {
           if (p.x - p.radiusX > width) p.x = -p.radiusX;
         });
       } 
-      // 3. EFECTO SOL DESPEJADO E INTERACTIVO
-      else if (type === 'clear') {
-        const s = ps[0];
-        if (s) {
-          s.angle += 0.003;
-          s.pulseVal += 0.03 * s.pulseDir;
-          if (s.pulseVal > 5 || s.pulseVal < -5) s.pulseDir *= -1;
-
-          const currentGlow = s.glow + s.pulseVal;
-
-          // Halo de calor dinámico
-          const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, currentGlow);
-          grad.addColorStop(0, 'rgba(255, 185, 45, 0.22)');
-          grad.addColorStop(0.4, 'rgba(255, 150, 30, 0.08)');
-          grad.addColorStop(1, 'rgba(255, 100, 10, 0)');
-          
-          ctx.fillStyle = grad;
-          ctx.beginPath();
-          ctx.arc(s.x, s.y, currentGlow, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Lente de destello secundario (Lens Flare)
-          const flareGrad = ctx.createRadialGradient(s.x - 45, s.y + 45, 0, s.x - 45, s.y + 45, 18);
-          flareGrad.addColorStop(0, 'rgba(255, 220, 180, 0.04)');
-          flareGrad.addColorStop(1, 'rgba(255, 220, 180, 0)');
-          ctx.fillStyle = flareGrad;
-          ctx.beginPath();
-          ctx.arc(s.x - 45, s.y + 45, 18, 0, Math.PI * 2);
-          ctx.fill();
-
-          // Rayos del sol giratorios
-          for (let i = 0; i < s.rays; i++) {
-            const rayAngle = s.angle + (Math.PI * 2 / s.rays) * i;
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(255, 175, 40, 0.12)`;
-            ctx.lineWidth = 1.8;
-            const startDist = s.radius + 3;
-            const endDist = currentGlow - 12;
-            ctx.moveTo(s.x + Math.cos(rayAngle) * startDist, s.y + Math.sin(rayAngle) * startDist);
-            ctx.lineTo(s.x + Math.cos(rayAngle) * endDist, s.y + Math.sin(rayAngle) * endDist);
-            ctx.stroke();
-          }
-        }
-      } 
-      // 4. EFECTO NIEBLA/HAZE SINUSOIDAL
       else if (type === 'mist' || type === 'fog') {
-        ps.forEach((p, idx) => {
+        ps.forEach(p => {
+          if (p.isStar) return;
           p.phase += p.speed;
           
           ctx.beginPath();
-          ctx.fillStyle = `rgba(215, 225, 235, ${p.opacity})`;
+          ctx.fillStyle = isNight ? `rgba(160, 180, 210, ${p.opacity})` : `rgba(215, 225, 235, ${p.opacity})`;
           
-          // Dibujar neblina flotante como banda sinusoidal
           for (let x = 0; x < width; x += 15) {
             const yOffset = Math.sin((x / p.period) + p.phase) * p.amplitude;
             ctx.fillRect(x, p.y + yOffset, 16, p.height);
@@ -348,7 +412,7 @@ function useWeatherCanvas(canvasRef, weatherMain) {
     return () => {
       if (animRef.current) cancelAnimationFrame(animRef.current);
     };
-  }, [weatherMain, canvasRef, initParticles]);
+  }, [weatherMain, isNight, canvasRef, initParticles]);
 }
 
 export default function WeatherWidget() {
@@ -357,6 +421,7 @@ export default function WeatherWidget() {
   const [forecast, setForecast] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isNight, setIsNight] = useState(false);
   const canvasRef = useRef(null);
   const dropdownRef = useRef(null);
 
@@ -375,15 +440,19 @@ export default function WeatherWidget() {
     const fetchWeather = async () => {
       setLoading(true);
       try {
-        // Consultamos la API abierta y gratuita de Open-Meteo
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${selectedCity.lat}&longitude=${selectedCity.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,uv_index&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America/Lima`;
+        // Consultamos la API de Open-Meteo, pidiendo is_day en el current
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${selectedCity.lat}&longitude=${selectedCity.lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,uv_index,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America/Lima`;
         const res = await fetch(url);
         if (!res.ok) throw new Error('API error');
         const data = await res.json();
         
+        // Detección en vivo de día vs noche
+        const apiIsDay = data.current.is_day === 1;
+        setIsNight(!apiIsDay);
+        
         // Mapeo clima actual
         const currentCode = data.current.weather_code;
-        const currentConfig = weatherCodes[currentCode] || { main: 'clouds', description: 'Nublado', icon: Cloud };
+        const currentConfig = weatherCodes[currentCode] || { main: 'clouds', descriptionDay: 'Nublado', descriptionNight: 'Noche Cubierta', iconDay: Cloud, iconNight: Cloud };
         
         setWeather({
           temp: Math.round(data.current.temperature_2m),
@@ -392,12 +461,12 @@ export default function WeatherWidget() {
           wind: Math.round(data.current.wind_speed_10m),
           uv: Math.round(data.current.uv_index),
           precipitation: data.current.precipitation,
-          description: currentConfig.description,
+          description: apiIsDay ? currentConfig.descriptionDay : currentConfig.descriptionNight,
           main: currentConfig.main,
-          icon: currentConfig.icon
+          icon: apiIsDay ? currentConfig.iconDay : currentConfig.iconNight
         });
 
-        // Mapeo pronóstico de 4 días (excluyendo el día de hoy)
+        // Mapeo pronóstico de 4 días
         const dailyForecast = [];
         const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
         
@@ -406,39 +475,43 @@ export default function WeatherWidget() {
           const dateObj = new Date(dateStr + 'T00:00:00');
           const dayName = days[dateObj.getDay()];
           const code = data.daily.weather_code[i];
-          const config = weatherCodes[code] || { main: 'clouds', description: 'Nublado', icon: Cloud };
+          const config = weatherCodes[code] || { main: 'clouds', descriptionDay: 'Nublado', iconDay: Cloud };
           
           dailyForecast.push({
             day: dayName,
             max: Math.round(data.daily.temperature_2m_max[i]),
             min: Math.round(data.daily.temperature_2m_min[i]),
             probRain: data.daily.precipitation_probability_max[i],
-            icon: config.icon,
-            description: config.description
+            icon: config.iconDay, // Para el pronóstico mostramos iconos de día estándar
+            description: config.descriptionDay
           });
         }
         setForecast(dailyForecast);
         
       } catch (err) {
         console.error("Error cargando clima real:", err);
-        // Fallback realista en caso de fallo de red
-        const fallbackTemp = selectedCity.id === 'chachapoyas' ? 18 : 28;
+        // Fallback realista calculando día/noche según hora local peruana (UTC-5)
+        const localHour = new Date().getHours();
+        const nightFallback = localHour < 6 || localHour >= 18;
+        setIsNight(nightFallback);
+        
+        const fallbackTemp = selectedCity.id === 'chachapoyas' ? 17 : 27;
         setWeather({
           temp: fallbackTemp,
           feels_like: fallbackTemp + 3,
-          humidity: 78,
-          wind: 8,
-          uv: 6,
+          humidity: 82,
+          wind: 6,
+          uv: nightFallback ? 0 : 5,
           precipitation: 0,
-          description: 'Nublado con Sol',
-          main: 'clouds',
-          icon: CloudSun
+          description: nightFallback ? 'Noche Despejada' : 'Cielo Despejado',
+          main: 'clear',
+          icon: nightFallback ? Moon : Sun
         });
         setForecast([
-          { day: 'Mañ', max: fallbackTemp + 2, min: fallbackTemp - 3, probRain: 40, icon: CloudSun, description: 'Parcialmente Nublado' },
-          { day: 'Pas', max: fallbackTemp + 3, min: fallbackTemp - 2, probRain: 20, icon: Sun, description: 'Despejado' },
-          { day: '3er', max: fallbackTemp - 1, min: fallbackTemp - 4, probRain: 80, icon: CloudRain, description: 'Lluvia Moderada' },
-          { day: '4to', max: fallbackTemp, min: fallbackTemp - 3, probRain: 60, icon: CloudLightning, description: 'Tormentas Aisladas' }
+          { day: 'Mañ', max: fallbackTemp + 2, min: fallbackTemp - 3, probRain: 30, icon: CloudSun, description: 'Parcialmente Nublado' },
+          { day: 'Pas', max: fallbackTemp + 3, min: fallbackTemp - 2, probRain: 15, icon: Sun, description: 'Despejado' },
+          { day: '3er', max: fallbackTemp - 1, min: fallbackTemp - 4, probRain: 75, icon: CloudRain, description: 'Lluvia Moderada' },
+          { day: '4to', max: fallbackTemp, min: fallbackTemp - 3, probRain: 50, icon: CloudLightning, description: 'Tormentas Aisladas' }
         ]);
       } finally {
         setLoading(false);
@@ -446,31 +519,51 @@ export default function WeatherWidget() {
     };
 
     fetchWeather();
-    const interval = setInterval(fetchWeather, 300000); // Actualiza cada 5 minutos
+    const interval = setInterval(fetchWeather, 300000);
     return () => clearInterval(interval);
   }, [selectedCity]);
 
-  useWeatherCanvas(canvasRef, weather?.main);
+  useWeatherCanvas(canvasRef, weather?.main, isNight);
 
   const WeatherIcon = weather ? weather.icon : Cloud;
-  const suggestions = weather ? (activitySuggestions[weather.main] || activitySuggestions.clouds) : [];
+  const suggestions = weather 
+    ? (isNight ? (activitySuggestionsNight[weather.main] || activitySuggestionsNight.clouds) : (activitySuggestionsDay[weather.main] || activitySuggestionsDay.clouds)) 
+    : [];
 
-  // Selector de color del background-gradient animado según el clima
+  // Selector de color del background-gradient animado
   const getClimaGradient = () => {
-    if (!weather) return 'from-slate-900 to-slate-950';
-    switch (weather.main) {
-      case 'clear':
-        return 'from-amber-950/40 via-sky-950/60 to-[var(--color-v-gray-950)]';
-      case 'rain':
-      case 'drizzle':
-        return 'from-blue-950/50 via-slate-900/60 to-[var(--color-v-gray-950)]';
-      case 'thunderstorm':
-        return 'from-purple-950/45 via-blue-950/45 to-[var(--color-v-gray-950)]';
-      case 'mist':
-      case 'fog':
-        return 'from-teal-950/30 via-slate-900/50 to-[var(--color-v-gray-950)]';
-      default:
-        return 'from-slate-900 via-sky-950/20 to-[var(--color-v-gray-950)]';
+    if (!weather) return 'from-slate-950 to-slate-900';
+    
+    if (isNight) {
+      switch (weather.main) {
+        case 'clear':
+          return 'from-slate-950 via-indigo-950/20 to-[var(--color-v-gray-950)]';
+        case 'rain':
+        case 'drizzle':
+          return 'from-slate-950 via-slate-900/60 to-[var(--color-v-gray-950)]';
+        case 'thunderstorm':
+          return 'from-slate-950 via-purple-950/30 to-[var(--color-v-gray-950)]';
+        case 'mist':
+        case 'fog':
+          return 'from-slate-950 via-teal-950/15 to-[var(--color-v-gray-950)]';
+        default:
+          return 'from-slate-950 via-slate-900/30 to-[var(--color-v-gray-950)]';
+      }
+    } else {
+      switch (weather.main) {
+        case 'clear':
+          return 'from-amber-950/40 via-sky-950/60 to-[var(--color-v-gray-950)]';
+        case 'rain':
+        case 'drizzle':
+          return 'from-blue-950/50 via-slate-900/60 to-[var(--color-v-gray-950)]';
+        case 'thunderstorm':
+          return 'from-purple-950/45 via-blue-950/45 to-[var(--color-v-gray-950)]';
+        case 'mist':
+        case 'fog':
+          return 'from-teal-950/30 via-slate-900/50 to-[var(--color-v-gray-950)]';
+        default:
+          return 'from-slate-900 via-sky-950/20 to-[var(--color-v-gray-950)]';
+      }
     }
   };
 
@@ -480,7 +573,7 @@ export default function WeatherWidget() {
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen"
-        style={{ opacity: weather?.main === 'clear' ? 0.9 : 0.7 }}
+        style={{ opacity: isNight ? 0.95 : 0.85 }}
       />
 
       <div className="relative z-10 flex flex-col justify-between h-full">
@@ -639,7 +732,7 @@ export default function WeatherWidget() {
                     key={i} 
                     className="text-[9px] font-medium text-white/80 bg-white/5 border border-white/5 px-2 py-1 rounded-lg hover:border-white/20 hover:bg-white/10 transition cursor-default"
                   >
-                    🍃 {s}
+                    🌙 {s}
                   </span>
                 ))}
               </div>
