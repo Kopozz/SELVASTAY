@@ -1,6 +1,6 @@
 /**
- * ConfigPage — Ajustes del Sistema & Personalización de Negocio (SaaS Engine)
- * Incluye bitácora de auditoría y control de módulos activos con estética Valve.
+ * ConfigPage — Ajustes del Sistema & Personalización de Negocio (Motor SaaS)
+ * Incluye bitácora de auditoría y control de módulos activos.
  */
 import { useState } from 'react';
 import { 
@@ -143,7 +143,7 @@ export default function ConfigPage() {
             <div className="space-y-3.5">
               <div className="flex items-center justify-between">
                 <span className="text-xs text-[var(--color-v-gray-400)]">Edición del Software</span>
-                <span className="text-xs text-[var(--color-v-gray-200)]">v2.5.0-VALVE</span>
+                <span className="text-xs text-[var(--color-v-gray-200)]">v2.5.0</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-[var(--color-v-gray-400)]">Persistencia Local</span>

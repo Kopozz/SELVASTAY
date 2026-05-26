@@ -1,5 +1,5 @@
 /**
- * Layout — VALVE Edition con Page Transitions
+ * Layout — Estructura Principal con Transiciones de Página
  */
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';

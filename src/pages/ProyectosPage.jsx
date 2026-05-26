@@ -1,6 +1,6 @@
 /**
  * ProyectosPage — Módulo de Gestión de Proyectos Ágiles (Sprints / Kanban / Gantt)
- * Diseñado con una estética industrial premium (Valve Edition).
+ * Diseñado con estética profesional dark theme.
  * 100% interactivo, con persistencia en localStorage e historial de auditoría integrado.
  */
 import { useState, useEffect, useMemo } from 'react';

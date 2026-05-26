@@ -1,5 +1,5 @@
 /**
- * Sidebar — VALVE Edition (Dinámico)
+ * Sidebar — Navegación Lateral (Dinámica)
  */
 import { NavLink } from 'react-router-dom';
 import { 
@@ -88,7 +88,7 @@ export default function Sidebar() {
               <h1 className="text-sm font-bold text-[var(--color-v-white)] tracking-tight leading-none truncate">
                 {businessName}
               </h1>
-              <p className="text-[9px] text-[var(--color-v-green)] font-bold tracking-[0.15em] uppercase mt-0.5">
+              <p className="text-xs text-[var(--color-v-green)] font-semibold tracking-wider uppercase mt-0.5">
                 {businessType === 'lodge' ? 'PRO' : 'SaaS Edition'}
               </p>
             </div>

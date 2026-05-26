@@ -1,5 +1,5 @@
 /**
- * ConnectivityBanner — VALVE Edition
+ * ConnectivityBanner — Indicador de Estado de Conexión
  */
 import { WifiOff, RefreshCw, Cloud, CloudOff } from 'lucide-react';
 import { useConnectivity } from '../hooks/useConnectivity';

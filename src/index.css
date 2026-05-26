@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /* ============================================================
-   SELVASTAY PRO — VALVE EDITION
+   SELVASTAY PRO — Sistema de Gestión Operativa
    Palette: #0a0a0a black, #00e676 green, #ffffff white
-   Style: Minimal, industrial, gradient, no emojis
+   Style: Minimal, profesional, dark theme
    ============================================================ */
 
 @theme {
@@ -41,23 +41,17 @@
   body {
     font-family: var(--font-sans);
     background: var(--color-v-black);
-    color: var(--color-v-gray-200);
+    color: var(--color-v-gray-100);
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Scanline effect */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.005), rgba(0, 0, 255, 0.01));
-    z-index: 9999;
-    background-size: 100% 4px, 3px 100%;
-    pointer-events: none;
-    opacity: 0.3;
-  }
+  /* Background subtle gradient — no overlay effects for clarity */
 
   ::selection { background: var(--color-v-green); color: #000; }
 }
@@ -135,8 +129,8 @@
     padding: 0.6rem 1.5rem;
     border-radius: 10px;
     font-weight: 600;
-    font-size: 0.8125rem;
-    letter-spacing: 0.02em;
+    font-size: 0.875rem;
+    letter-spacing: 0.01em;
     transition: all 0.25s ease;
     border: none;
     cursor: pointer;
@@ -154,7 +148,7 @@
     padding: 0.6rem 1.5rem;
     border-radius: 10px;
     font-weight: 500;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     transition: all 0.25s ease;
     border: 1px solid rgba(255,255,255,0.08);
     cursor: pointer;
@@ -173,7 +167,7 @@
     color: var(--color-v-white);
     transition: all 0.2s ease;
     width: 100%;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
   }
   .input-field:focus {
     outline: none;
@@ -191,7 +185,7 @@
     border-radius: 10px;
     color: var(--color-v-gray-400);
     font-weight: 500;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     transition: all 0.2s ease;
     text-decoration: none;
     border: 1px solid transparent;

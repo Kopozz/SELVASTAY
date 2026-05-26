@@ -1,6 +1,6 @@
 /**
- * DashboardPage — VALVE Edition (Dinamizado)
- * Bento grid, Lucide icons, green/black/white palette
+ * DashboardPage — Panel Principal de Control
+ * Vista bento grid con estado operativo en tiempo real
  */
 import { useState, useMemo } from 'react';
 import { Plus, QrCode, Users, CheckCircle2, Clock, TrendingUp, Map as MapIcon, LayoutGrid, ArrowUpRight } from 'lucide-react';
@@ -10,7 +10,6 @@ import { useBusinessConfig } from '../hooks/useBusinessConfig';
 import HabitacionCard from '../components/HabitacionCard';
 import LodgeMap from '../components/LodgeMap';
 import WeatherWidget from '../components/WeatherWidget';
-import CarbonFootprint from '../components/CarbonFootprint';
 import QRCheckin from '../components/QRCheckin';
 import toast from 'react-hot-toast';
 
@@ -89,7 +88,7 @@ export default function DashboardPage() {
             <CheckCircle2 size={22} className="text-[var(--color-v-green)]" />
           </div>
           <div>
-            <p className="text-[var(--color-v-gray-400)] text-[10px] font-bold uppercase tracking-widest">Disponibles</p>
+            <p className="text-[var(--color-v-gray-400)] text-xs font-semibold uppercase tracking-wider">Disponibles</p>
             <h3 className="text-2xl font-black text-[var(--color-v-white)] mt-1 animate-counter">{stats.disponibles}</h3>
           </div>
         </div>
@@ -102,7 +101,7 @@ export default function DashboardPage() {
             <Users size={22} className="text-[var(--color-v-amber)]" />
           </div>
           <div>
-            <p className="text-[var(--color-v-gray-400)] text-[10px] font-bold uppercase tracking-widest">En Uso</p>
+            <p className="text-[var(--color-v-gray-400)] text-xs font-semibold uppercase tracking-wider">En Uso</p>
             <h3 className="text-2xl font-black text-[var(--color-v-white)] mt-1 animate-counter">{stats.ocupadas}</h3>
           </div>
         </div>
@@ -115,7 +114,7 @@ export default function DashboardPage() {
             <Clock size={22} className="text-[var(--color-v-blue)]" />
           </div>
           <div>
-            <p className="text-[var(--color-v-gray-400)] text-[10px] font-bold uppercase tracking-widest">{getBookingName(true)}</p>
+            <p className="text-[var(--color-v-gray-400)] text-xs font-semibold uppercase tracking-wider">{getBookingName(true)}</p>
             <h3 className="text-2xl font-black text-[var(--color-v-white)] mt-1 animate-counter">{stats.reservadas}</h3>
           </div>
         </div>
@@ -128,7 +127,7 @@ export default function DashboardPage() {
             <TrendingUp size={22} className="text-[var(--color-v-green)]" />
           </div>
           <div>
-            <p className="text-[var(--color-v-gray-400)] text-[10px] font-bold uppercase tracking-widest">Ocupación</p>
+            <p className="text-[var(--color-v-gray-400)] text-xs font-semibold uppercase tracking-wider">Ocupación</p>
             <h3 className="text-2xl font-black text-[var(--color-v-white)] mt-1 animate-counter">{stats.ocupacion}%</h3>
           </div>
         </div>
@@ -142,21 +141,21 @@ export default function DashboardPage() {
           <div className="v-card p-5">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-xs font-bold text-[var(--color-v-white)] uppercase tracking-widest">Inventario de {getUnitName(true)}</h3>
-                <p className="text-[9px] text-[var(--color-v-gray-500)] font-medium mt-0.5">Control sobre {stats.total} unidades físicas</p>
+                <h3 className="text-sm font-bold text-[var(--color-v-white)] uppercase tracking-wider">Inventario de {getUnitName(true)}</h3>
+                <p className="text-xs text-[var(--color-v-gray-500)] font-medium mt-0.5">Control sobre {stats.total} unidades físicas</p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-[var(--color-v-green)]" />
-                  <span className="text-[10px] text-[var(--color-v-gray-400)] font-medium">Libre</span>
+                  <span className="text-xs text-[var(--color-v-gray-400)] font-medium">Libre</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-[var(--color-v-amber)]" />
-                  <span className="text-[10px] text-[var(--color-v-gray-400)] font-medium">En Uso</span>
+                  <span className="text-xs text-[var(--color-v-gray-400)] font-medium">En Uso</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-[var(--color-v-blue)]" />
-                  <span className="text-[10px] text-[var(--color-v-gray-400)] font-medium">{getBookingName()}</span>
+                  <span className="text-xs text-[var(--color-v-gray-400)] font-medium">{getBookingName()}</span>
                 </div>
               </div>
             </div>
@@ -170,7 +169,7 @@ export default function DashboardPage() {
           {/* Map or Grid */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-sm font-bold text-[var(--color-v-white)] uppercase tracking-widest flex items-center gap-2">
+              <h2 className="text-sm font-bold text-[var(--color-v-white)] uppercase tracking-wider flex items-center gap-2">
                 <MapIcon size={14} className="text-[var(--color-v-green)]" />
                 Vista Operativa
               </h2>
@@ -233,7 +232,7 @@ export default function DashboardPage() {
               <div className="p-1.5 rounded-md bg-[rgba(0,230,118,0.1)] text-[var(--color-v-green)]">
                 <ArrowUpRight size={14} />
               </div>
-              <span className="text-[10px] font-bold text-[var(--color-v-gray-400)] uppercase tracking-[0.2em]">
+               <span className="text-xs font-semibold text-[var(--color-v-gray-400)] uppercase tracking-wider">
                 Ingreso Hoy
               </span>
             </div>
@@ -241,13 +240,34 @@ export default function DashboardPage() {
               <span className="text-sm mr-1 font-bold text-[var(--color-v-gray-500)]">{currency}</span>
               {stats.ingresoDia.toLocaleString()}
             </div>
-            <p className="text-[10px] text-[var(--color-v-gray-500)] font-medium mt-3 border-t border-[rgba(255,255,255,0.04)] pt-3">
+             <p className="text-xs text-[var(--color-v-gray-500)] font-medium mt-3 border-t border-[rgba(255,255,255,0.04)] pt-3">
               {stats.ocupadas + stats.reservadas} {getUnitName(true).toLowerCase()} activas
             </p>
           </div>
 
           <WeatherWidget />
-          <CarbonFootprint reservas={reservas} />
+
+          {/* Resumen de Actividad Reciente */}
+          <div className="v-card p-5">
+            <h3 className="text-sm font-bold text-[var(--color-v-white)] uppercase tracking-wider mb-4">Actividad Reciente</h3>
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-2 h-2 rounded-full bg-[var(--color-v-green)]" />
+                <span className="text-[var(--color-v-gray-300)]">{stats.disponibles} unidades disponibles</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-2 h-2 rounded-full bg-[var(--color-v-amber)]" />
+                <span className="text-[var(--color-v-gray-300)]">{stats.ocupadas} en uso actualmente</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="w-2 h-2 rounded-full bg-[var(--color-v-blue)]" />
+                <span className="text-[var(--color-v-gray-300)]">{stats.reservadas} {getBookingName(true).toLowerCase()} pendientes</span>
+              </div>
+              <div className="pt-2 border-t border-[rgba(255,255,255,0.04)] text-xs text-[var(--color-v-gray-500)]">
+                Total de unidades operativas: {stats.total}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

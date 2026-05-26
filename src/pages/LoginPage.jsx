@@ -1,5 +1,5 @@
 /**
- * LoginPage — Estética VALVE
+ * LoginPage — Pantalla de Inicio de Sesión
  */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -38,13 +38,13 @@ export default function LoginPage() {
             <Trees size={32} className="text-black" strokeWidth={2.5} />
           </div>
           <h1 className="text-2xl font-bold text-[var(--color-v-white)] tracking-tight">SelvaStay <span className="text-[var(--color-v-green)] font-black">PRO</span></h1>
-          <p className="text-[var(--color-v-gray-500)] text-[10px] uppercase tracking-[0.3em] mt-1 font-bold">Eco-Lodge Management System</p>
+          <p className="text-[var(--color-v-gray-500)] text-xs uppercase tracking-widest mt-1 font-semibold">Sistema de Gestión Operativa</p>
         </div>
 
         <div className="v-card p-8 border-[rgba(255,255,255,0.06)] shadow-2xl">
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-[var(--color-v-gray-500)] uppercase tracking-wider ml-1">Identificación</label>
+              <label className="text-xs font-semibold text-[var(--color-v-gray-500)] uppercase tracking-wider ml-1">Identificación</label>
               <div className="relative group">
                 <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-v-gray-500)] group-focus-within:text-[var(--color-v-green)] transition-colors" />
                 <input
@@ -60,8 +60,8 @@ export default function LoginPage() {
 
             <div className="space-y-1.5">
               <div className="flex justify-between items-center px-1">
-                <label className="text-[10px] font-bold text-[var(--color-v-gray-500)] uppercase tracking-wider">Contraseña</label>
-                <button type="button" className="text-[9px] text-[var(--color-v-gray-600)] hover:text-[var(--color-v-gray-400)] font-medium transition-colors uppercase tracking-widest">¿Olvidaste?</button>
+                <label className="text-xs font-semibold text-[var(--color-v-gray-500)] uppercase tracking-wider">Contraseña</label>
+                <button type="button" className="text-[10px] text-[var(--color-v-gray-600)] hover:text-[var(--color-v-gray-400)] font-medium transition-colors uppercase tracking-wider">¿Olvidaste?</button>
               </div>
               <div className="relative group">
                 <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-v-gray-500)] group-focus-within:text-[var(--color-v-green)] transition-colors" />
@@ -94,7 +94,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="mt-8 text-center text-[10px] text-[var(--color-v-gray-600)] font-medium uppercase tracking-[0.1em]">
+        <p className="mt-8 text-center text-xs text-[var(--color-v-gray-600)] font-medium">
           Acceso restringido para personal autorizado <br/> 
           <span className="text-[var(--color-v-gray-700)] mt-2 block">© 2026 SelvaStay Software Solutions</span>
         </p>

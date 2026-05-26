@@ -1,5 +1,5 @@
 /**
- * QRCheckin — Generador de QR para Check-in Autónomo (VALVE Edition)
+ * QRCheckin — Generador de QR para Check-in Autónomo
  */
 import { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';

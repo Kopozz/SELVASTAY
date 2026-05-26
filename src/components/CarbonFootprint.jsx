@@ -1,5 +1,6 @@
 /**
- * CarbonFootprint — VALVE Edition
+ * CarbonFootprint — Indicador de Huella Ecológica (Componente Deshabilitado)
+ * Ya no se importa en el dashboard principal.
  * Indicador de Huella de Carbono por estadía en el eco-lodge.
  * Recibe reservas via props.
  */
