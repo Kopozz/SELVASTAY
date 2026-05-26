@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { CalendarCheck, Search, UserCheck, Clock, XCircle, LogOut, AlertTriangle } from 'lucide-react';
 import { useReservas } from '../hooks/useReservas';
+import { useBusinessConfig } from '../hooks/useBusinessConfig';
 import CheckoutModal from '../components/CheckoutModal';
 import toast from 'react-hot-toast';
 
@@ -15,6 +16,13 @@ const estadoConfig = {
 
 export default function ReservasPage() {
   const { reservas, loading, updateEstadoReserva } = useReservas();
+  const { 
+    getUnitName, 
+    getBookingName, 
+    getClientName,
+    addAuditLog
+  } = useBusinessConfig();
+  
   const [search, setSearch] = useState('');
   const [checkoutReserva, setCheckoutReserva] = useState(null);
 
@@ -32,6 +40,10 @@ export default function ReservasPage() {
     try {
       await updateEstadoReserva(id, estado);
       if (estado !== 'checkout') toast.success(`Estado actualizado a ${estado}`);
+      
+      const resObj = reservas.find(r => r.id === id);
+      const targetName = resObj?.cliente?.nombre_completo || 'Cliente';
+      addAuditLog('RESERVA_ESTADO_MODIFICADO', `Estado de ${getBookingName().toLowerCase()} de ${targetName} actualizado a '${estado.toUpperCase()}'.`);
     } catch {
       toast.error('Error al actualizar');
     }
@@ -41,14 +53,14 @@ export default function ReservasPage() {
     <div className="space-y-6">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-v-white)] tracking-tight">Reservas</h1>
-          <p className="text-[var(--color-v-gray-400)] text-sm mt-1">Gestión de reservas y estados.</p>
+          <h1 className="text-2xl font-bold text-[var(--color-v-white)] tracking-tight">{getBookingName(true)}</h1>
+          <p className="text-[var(--color-v-gray-400)] text-sm mt-1">Gestión de {getBookingName(true).toLowerCase()} y estados.</p>
         </div>
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-v-gray-400)]" />
           <input
             type="text"
-            placeholder="Buscar por huésped, habitación..."
+            placeholder={`Buscar por ${getClientName().toLowerCase()}, ${getUnitName().toLowerCase()}...`}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="input-field pl-10 w-72"
@@ -59,7 +71,9 @@ export default function ReservasPage() {
       <div className="v-card">
         <div className="p-5 border-b border-[rgba(255,255,255,0.04)] flex items-center gap-2">
           <CalendarCheck size={16} className="text-[var(--color-v-green)]" />
-          <h3 className="font-semibold text-[var(--color-v-white)] text-sm">{filtered.length} reservas</h3>
+          <h3 className="font-semibold text-[var(--color-v-white)] text-sm">
+            {filtered.length} {getBookingName(filtered.length !== 1).toLowerCase()}
+          </h3>
         </div>
 
         {loading ? (
@@ -67,16 +81,18 @@ export default function ReservasPage() {
             <div className="w-5 h-5 border-2 border-[var(--color-v-green)] border-t-transparent rounded-full animate-spin mx-auto" />
           </div>
         ) : filtered.length === 0 ? (
-          <div className="p-12 text-center text-[var(--color-v-gray-400)] text-sm">Sin reservas encontradas</div>
+          <div className="p-12 text-center text-[var(--color-v-gray-400)] text-sm">
+            Sin {getBookingName(true).toLowerCase()} encontradas
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm whitespace-nowrap">
               <thead className="bg-[var(--color-v-black-3)] text-[var(--color-v-gray-400)]">
                 <tr>
-                  <th className="px-5 py-3 font-medium">Huésped</th>
-                  <th className="px-5 py-3 font-medium">Habitación</th>
-                  <th className="px-5 py-3 font-medium">Ingreso</th>
-                  <th className="px-5 py-3 font-medium">Salida</th>
+                  <th className="px-5 py-3 font-medium">{getClientName()}</th>
+                  <th className="px-5 py-3 font-medium">{getUnitName()}</th>
+                  <th className="px-5 py-3 font-medium">Ingreso / Inicio</th>
+                  <th className="px-5 py-3 font-medium">Salida / Cierre</th>
                   <th className="px-5 py-3 font-medium">Estado</th>
                   <th className="px-5 py-3 font-medium text-right">Acciones</th>
                 </tr>
@@ -89,7 +105,9 @@ export default function ReservasPage() {
                       <td className="px-5 py-4 font-medium text-[var(--color-v-white)]">
                         {r.cliente?.nombre_completo || 'Sin nombre'}
                       </td>
-                      <td className="px-5 py-4">{r.habitacion?.numero || '—'}</td>
+                      <td className="px-5 py-4">
+                        {getUnitName()} {r.habitacion?.numero || '—'}
+                      </td>
                       <td className="px-5 py-4">{r.fecha_ingreso || '—'}</td>
                       <td className="px-5 py-4">{r.fecha_salida || '—'}</td>
                       <td className="px-5 py-4">
@@ -99,16 +117,16 @@ export default function ReservasPage() {
                       </td>
                       <td className="px-5 py-4 text-right">
                         {r.estado === 'confirmada' && (
-                          <button onClick={() => handleEstado(r.id, 'checkin')} className="text-[var(--color-v-green)] text-xs font-medium hover:underline">
-                            Check-in
+                          <button onClick={() => handleEstado(r.id, 'checkin')} className="text-[var(--color-v-green)] text-xs font-medium hover:underline cursor-pointer">
+                            Registrar Entrada
                           </button>
                         )}
                         {r.estado === 'checkin' && (
                           <button 
                             onClick={() => setCheckoutReserva(r)} 
-                            className="text-[var(--color-v-amber)] text-xs font-medium hover:underline flex items-center gap-1 ml-auto"
+                            className="text-[var(--color-v-amber)] text-xs font-medium hover:underline flex items-center gap-1 ml-auto cursor-pointer"
                           >
-                            <LogOut size={12} /> Check-out
+                            <LogOut size={12} /> Registrar Salida
                           </button>
                         )}
                       </td>

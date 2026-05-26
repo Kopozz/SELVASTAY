@@ -1,21 +1,73 @@
 /**
- * Sidebar — VALVE Edition
+ * Sidebar — VALVE Edition (Dinámico)
  */
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, CalendarCheck, Users, Settings, Utensils, Trees, ChevronLeft, ChevronRight, LogOut } from 'lucide-react';
+import { 
+  LayoutDashboard, 
+  CalendarCheck, 
+  Users, 
+  Settings, 
+  Utensils, 
+  Trees, 
+  ChevronLeft, 
+  ChevronRight, 
+  LogOut, 
+  ListTodo, 
+  Hotel, 
+  Briefcase, 
+  Activity, 
+  Car 
+} from 'lucide-react';
 import { useState } from 'react';
 import ConnectivityBanner from './ConnectivityBanner';
+import { useBusinessConfig } from '../hooks/useBusinessConfig';
 
-const navItems = [
-  { to: '/',          icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/reservas',  icon: CalendarCheck,   label: 'Reservas' },
-  { to: '/clientes',  icon: Users,           label: 'Huéspedes' },
-  { to: '/servicios', icon: Utensils,        label: 'Servicios' },
-  { to: '/config',    icon: Settings,        label: 'Ajustes' },
-];
+// Mapeo de íconos según tipo de negocio
+const businessIcons = {
+  lodge: Trees,
+  hotel: Hotel,
+  coworking: Briefcase,
+  canchas: Activity,
+  alquiler: Car
+};
 
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
+  const { 
+    businessName, 
+    businessType, 
+    activeModules, 
+    getBookingName, 
+    getClientName, 
+    getServiceName 
+  } = useBusinessConfig();
+
+  // Dinamizar ícono de la cabecera
+  const HeaderIcon = businessIcons[businessType] || Trees;
+
+  // Construir elementos de navegación dinámicos basados en módulos activos
+  const navItems = [
+    { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/reservas', icon: CalendarCheck, label: getBookingName(true) }
+  ];
+
+  // Módulo de Clientes/Huéspedes
+  if (activeModules.clients) {
+    navItems.push({ to: '/clientes', icon: Users, label: getClientName(true) });
+  }
+
+  // Módulo de Servicios/Consumos
+  if (activeModules.services) {
+    navItems.push({ to: '/servicios', icon: Utensils, label: getServiceName(true) });
+  }
+
+  // Módulo de Gestión de Proyectos (Kanban / Sprints)
+  if (activeModules.projects) {
+    navItems.push({ to: '/proyectos', icon: ListTodo, label: 'Proyectos ágiles' });
+  }
+
+  // Ajustes siempre al final
+  navItems.push({ to: '/config', icon: Settings, label: 'Ajustes' });
 
   return (
     <aside
@@ -29,12 +81,16 @@ export default function Sidebar() {
       <div className="p-4 mb-1">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-lg bg-[var(--color-v-green)] flex items-center justify-center flex-shrink-0">
-            <Trees size={18} className="text-black" strokeWidth={2.5} />
+            <HeaderIcon size={18} className="text-black" strokeWidth={2.5} />
           </div>
           {!collapsed && (
-            <div className="animate-fade-in">
-              <h1 className="text-sm font-bold text-[var(--color-v-white)] tracking-tight leading-none">SelvaStay</h1>
-              <p className="text-[9px] text-[var(--color-v-green)] font-bold tracking-[0.15em] uppercase mt-0.5">PRO</p>
+            <div className="animate-fade-in truncate">
+              <h1 className="text-sm font-bold text-[var(--color-v-white)] tracking-tight leading-none truncate">
+                {businessName}
+              </h1>
+              <p className="text-[9px] text-[var(--color-v-green)] font-bold tracking-[0.15em] uppercase mt-0.5">
+                {businessType === 'lodge' ? 'PRO' : 'SaaS Edition'}
+              </p>
             </div>
           )}
         </div>
@@ -55,7 +111,7 @@ export default function Sidebar() {
             title={collapsed ? label : undefined}
           >
             <Icon size={17} strokeWidth={1.5} />
-            {!collapsed && <span>{label}</span>}
+            {!collapsed && <span className="truncate">{label}</span>}
           </NavLink>
         ))}
       </nav>
@@ -84,3 +140,4 @@ export default function Sidebar() {
     </aside>
   );
 }
+

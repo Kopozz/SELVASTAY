@@ -1,11 +1,12 @@
 /**
- * DashboardPage — VALVE Edition
- * Bento grid, zero emojis, Lucide icons, green/black/white palette
+ * DashboardPage — VALVE Edition (Dinamizado)
+ * Bento grid, Lucide icons, green/black/white palette
  */
 import { useState, useMemo } from 'react';
 import { Plus, QrCode, Users, CheckCircle2, Clock, TrendingUp, Map as MapIcon, LayoutGrid, ArrowUpRight } from 'lucide-react';
 import { useHabitaciones } from '../hooks/useHabitaciones';
 import { useReservas } from '../hooks/useReservas';
+import { useBusinessConfig } from '../hooks/useBusinessConfig';
 import HabitacionCard from '../components/HabitacionCard';
 import LodgeMap from '../components/LodgeMap';
 import WeatherWidget from '../components/WeatherWidget';
@@ -16,13 +17,22 @@ import toast from 'react-hot-toast';
 export default function DashboardPage() {
   const { habitaciones, updateEstado } = useHabitaciones();
   const { reservas } = useReservas();
-  const [viewMode, setViewMode] = useState('map');
+  const { 
+    businessName, 
+    businessType, 
+    currency, 
+    getUnitName, 
+    getBookingName, 
+    getClientName 
+  } = useBusinessConfig();
+  
+  const [viewMode, setViewMode] = useState('grid'); // Cambiado a 'grid' por defecto para dar mejor soporte a coworking/canchas
   const [showQR, setShowQR] = useState(false);
 
   const handleNuevoCheckin = () => {
-    setViewMode('map');
+    setViewMode('grid');
 
-    toast('Seleccione una habitación libre en el mapa', {
+    toast(`Seleccione un ${getUnitName().toLowerCase()} libre en el grid`, {
       icon: '🏨',
       style: { background: '#111', color: '#fff', fontSize: '12px', border: '1px solid #222' }
     });
@@ -52,7 +62,7 @@ export default function DashboardPage() {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-[var(--color-v-white)] tracking-tight">Dashboard</h1>
-          <p className="text-[var(--color-v-gray-400)] text-sm mt-1">Ocupación y estado del eco-lodge en tiempo real.</p>
+          <p className="text-[var(--color-v-gray-400)] text-sm mt-1">Ocupación y estado de {businessName} en tiempo real.</p>
         </div>
         <div className="flex items-center gap-2">
           <button onClick={() => setShowQR(true)} className="btn-secondary flex items-center gap-2">
@@ -64,7 +74,7 @@ export default function DashboardPage() {
             className="btn-primary flex items-center gap-2"
           >
             <Plus size={16} />
-            <span>Nuevo Check-in</span>
+            <span>Nuevo Registro</span>
           </button>
         </div>
       </header>
@@ -92,7 +102,7 @@ export default function DashboardPage() {
             <Users size={22} className="text-[var(--color-v-amber)]" />
           </div>
           <div>
-            <p className="text-[var(--color-v-gray-400)] text-[10px] font-bold uppercase tracking-widest">Ocupadas</p>
+            <p className="text-[var(--color-v-gray-400)] text-[10px] font-bold uppercase tracking-widest">En Uso</p>
             <h3 className="text-2xl font-black text-[var(--color-v-white)] mt-1 animate-counter">{stats.ocupadas}</h3>
           </div>
         </div>
@@ -105,7 +115,7 @@ export default function DashboardPage() {
             <Clock size={22} className="text-[var(--color-v-blue)]" />
           </div>
           <div>
-            <p className="text-[var(--color-v-gray-400)] text-[10px] font-bold uppercase tracking-widest">Reservadas</p>
+            <p className="text-[var(--color-v-gray-400)] text-[10px] font-bold uppercase tracking-widest">{getBookingName(true)}</p>
             <h3 className="text-2xl font-black text-[var(--color-v-white)] mt-1 animate-counter">{stats.reservadas}</h3>
           </div>
         </div>
@@ -132,8 +142,8 @@ export default function DashboardPage() {
           <div className="v-card p-5">
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-xs font-bold text-[var(--color-v-white)] uppercase tracking-widest">Estado de Inventario</h3>
-                <p className="text-[9px] text-[var(--color-v-gray-500)] font-medium mt-0.5">Control de habitaciones sobre {stats.total} unidades</p>
+                <h3 className="text-xs font-bold text-[var(--color-v-white)] uppercase tracking-widest">Inventario de {getUnitName(true)}</h3>
+                <p className="text-[9px] text-[var(--color-v-gray-500)] font-medium mt-0.5">Control sobre {stats.total} unidades físicas</p>
               </div>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
@@ -142,11 +152,11 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-[var(--color-v-amber)]" />
-                  <span className="text-[10px] text-[var(--color-v-gray-400)] font-medium">Ocupada</span>
+                  <span className="text-[10px] text-[var(--color-v-gray-400)] font-medium">En Uso</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-full bg-[var(--color-v-blue)]" />
-                  <span className="text-[10px] text-[var(--color-v-gray-400)] font-medium">Reserva</span>
+                  <span className="text-[10px] text-[var(--color-v-gray-400)] font-medium">{getBookingName()}</span>
                 </div>
               </div>
             </div>
@@ -165,20 +175,22 @@ export default function DashboardPage() {
                 Vista Operativa
               </h2>
               <div className="flex items-center gap-1 p-1 rounded-lg bg-[var(--color-v-black-3)]">
-                <button
-                  onClick={() => setViewMode('map')}
-                  className={`p-2 rounded-md transition-all text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${
-                    viewMode === 'map'
-                      ? 'bg-[var(--color-v-green)] text-black shadow-[0_0_15px_rgba(0,230,118,0.2)]'
-                      : 'text-[var(--color-v-gray-400)] hover:text-[var(--color-v-white)]'
-                  }`}
-                >
-                  <MapIcon size={11} /> Mapa
-                </button>
+                {businessType === 'lodge' && (
+                  <button
+                    onClick={() => setViewMode('map')}
+                    className={`p-2 rounded-md transition-all text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${
+                      viewMode === 'map'
+                        ? 'bg-[var(--color-v-green)] text-black shadow-[0_0_15px_rgba(0,230,118,0.2)]'
+                        : 'text-[var(--color-v-gray-400)] hover:text-[var(--color-v-white)]'
+                    }`}
+                  >
+                    <MapIcon size={11} /> Mapa
+                  </button>
+                )}
                 <button
                   onClick={() => setViewMode('grid')}
                   className={`p-2 rounded-md transition-all text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 ${
-                    viewMode === 'grid'
+                    viewMode === 'grid' || (businessType !== 'lodge' && viewMode === 'map')
                       ? 'bg-[var(--color-v-green)] text-black shadow-[0_0_15px_rgba(0,230,118,0.2)]'
                       : 'text-[var(--color-v-gray-400)] hover:text-[var(--color-v-white)]'
                   }`}
@@ -189,14 +201,18 @@ export default function DashboardPage() {
             </div>
 
             <div className="v-card overflow-hidden border-[rgba(255,255,255,0.06)] shadow-xl">
-              {viewMode === 'map' ? (
+              {viewMode === 'map' && businessType === 'lodge' ? (
                 <LodgeMap />
               ) : (
                 <div className="p-4 grid grid-cols-2 md:grid-cols-3 gap-3">
                   {habitaciones.map((h) => (
                     <HabitacionCard 
                       key={h.id} 
-                      habitacion={h} 
+                      habitacion={{
+                        ...h,
+                        // Traducir dinámicamente tipo de unidad para que no rompa la coherencia
+                        tipo: h.tipo === 'simple' ? `Simple` : h.tipo === 'doble' ? `Doble` : h.tipo === 'suite' ? `Suite Premium` : h.tipo
+                      }} 
                       onStatusChange={handleStatusChange}
                     />
                   ))}
@@ -222,11 +238,11 @@ export default function DashboardPage() {
               </span>
             </div>
             <div className="text-4xl font-black text-[var(--color-v-white)] tracking-tighter">
-              <span className="text-sm mr-1 font-bold text-[var(--color-v-gray-500)]">S/</span>
+              <span className="text-sm mr-1 font-bold text-[var(--color-v-gray-500)]">{currency}</span>
               {stats.ingresoDia.toLocaleString()}
             </div>
             <p className="text-[10px] text-[var(--color-v-gray-500)] font-medium mt-3 border-t border-[rgba(255,255,255,0.04)] pt-3">
-              {stats.ocupadas + stats.reservadas} habitaciones activas
+              {stats.ocupadas + stats.reservadas} {getUnitName(true).toLowerCase()} activas
             </p>
           </div>
 
