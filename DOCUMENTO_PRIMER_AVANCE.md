@@ -61,7 +61,25 @@ Para mantener el proyecto viable, de bajo costo y fácil de implementar en esta 
 
 ---
 
-## 3. IMPACTO SOCIAL: ¿POR QUÉ ES BUENO PARA LA SOCIEDAD Y EN QUÉ AYUDA?
+## 3. MODELO DE NEGOCIO (Business Model Canvas)
+
+Para asegurar la viabilidad comercial y el alineamiento estratégico del proyecto, hemos estructurado nuestro **Business Model Canvas (BMC)** enfocado en un modelo **SaaS (Software as a Service)** regionalizado para la selva peruana:
+
+| Bloque Canvas | Elementos Clave del Proyecto | Justificación Estratégica |
+|---|---|---|
+| **1. Propuesta de Valor** | • Gestión Bimodal Unificada (Hospedaje + Recreación/Pasadía).<br>• Toma de decisiones basada en datos (Dashboard con KPIs y clima en tiempo real).<br>• Optimización Operativa (Eliminación de overbooking).<br>• Cumplimiento Legal Automatizado. | Integramos en una plataforma ágil, adaptable y de bajo costo tanto las reservas como los consumos y la planificación interna, resolviendo la desconexión operativa de las MIPYMES turísticas. |
+| **2. Segmento de Clientes** | • Eco-Lodges y Hoteles de Selva.<br>• Recreos Turísticos (Pasadías).<br>• Centros Turísticos de Modalidad Mixta (Hospedaje + Restaurante). | Nos enfocamos en establecimientos de pernoctación y esparcimiento en el corredor turístico de la Amazonía que hoy se gestionan de forma manual. |
+| **3. Canales** | • Venta Directa Corporativa.<br>• Alianzas Institucionales (gremios turísticos).<br>• Plataforma Web (SaaS). | El canal principal es la plataforma web para el acceso, gestión y entrega de servicio, apalancado con consultoría presencial para los primeros 40 clientes. |
+| **4. Relación con Clientes** | • Soporte de implementación personalizado.<br>• Servicio de consultoría de negocios (BI y KPIs).<br>• Comunidad de usuarios. | Acompañamos al cliente en la transición del registro manual en papel al digital para reducir la resistencia al cambio. |
+| **5. Flujo de Ingresos** | • Suscripciones Mensuales/Anuales.<br>• Servicios de implementación (migración de datos históricos).<br>• Módulos Premium (Analítica avanzada, facturación electrónica). | Generamos un flujo de ingresos recurrente y predecible mediante licenciamiento SaaS adaptado al tamaño de la MIPYME. |
+| **6. Recursos Clave** | • Equipo de Desarrollo Full Stack (React, PostgreSQL).<br>• Infraestructura Tecnológica (Supabase Cloud, servidores escalables).<br>• Know-how del Sector Turístico. | Garantizamos que el sistema sea estable, escalable y responda exactamente a las necesidades logísticas de la región. |
+| **7. Actividades Clave** | • Desarrollo y Mantenimiento de Software.<br>• Análisis de requerimientos locales (Conectividad e inestabilidad climática).<br>• Gestión de datos y BI (Analítica operativa).<br>• Capacitación técnica. | Aseguramos la mejora continua de la plataforma web y la alfabetización digital de los recepcionistas locales. |
+| **8. Socios Clave** | • Proveedores de Cloud Computing.<br>• Cámara de Comercio y Turismo de San Martín.<br>• Proveedores de Facturación Electrónica (PSE).<br>• Dircetur (Normativas regionales). | Alianzas estratégicas para facilitar el acceso a la red de establecimientos turísticos y asegurar la legalidad tributaria local. |
+| **9. Estructura de Costos** | • Costos de Desarrollo (Salarios del equipo técnico).<br>• Gastos de Infraestructura Cloud (Hosting, base de datos).<br>• Marketing y Ventas (Captación de clientes). | Mantenemos una estructura de costos optimizada apoyándonos en tecnologías serverless (Supabase) que minimizan los gastos de servidor iniciales. |
+
+---
+
+## 4. IMPACTO SOCIAL: ¿POR QUÉ ES BUENO PARA LA SOCIEDAD Y EN QUÉ AYUDA?
 
 **SelvaStay Pro** no es solo una herramienta tecnológica; tiene un propósito de desarrollo socioeconómico y ambiental enfocado en la Amazonía peruana:
 
@@ -80,28 +98,28 @@ Para mantener el proyecto viable, de bajo costo y fácil de implementar en esta 
 └──────────────────┘          └──────────────────┘          └──────────────────┘
 ```
 
-### 3.1 Digitalización e Inclusión Tecnológica de MIPYMES
+### 4.1 Digitalización e Inclusión Tecnológica de MIPYMES
 Las Micro y Pequeñas Empresas (MIPYMES) del sector turismo en regiones como San Martín muchas veces quedan excluidas de la transformación digital debido a los altos costos de licencias de software extranjeros (como Opera PMS o Cloudbeds) y la complejidad de su uso. 
 - **SelvaStay Pro** democratiza el acceso a tecnología de primer nivel (React, bases de datos cloud, interfaces interactivas) con una curva de aprendizaje mínima y requerimientos de hardware sumamente bajos.
 
-### 3.2 Fomento del Ecoturismo y Turismo Sostenible
+### 4.2 Fomento del Ecoturismo y Turismo Sostenible
 Al automatizar la recepción, el control de huéspedes y la venta de servicios (tours locales, guiados, gastronomía amazónica), el sistema ayuda a que los eco-lodges brinden una experiencia de nivel internacional. Esto atrae a más turistas nacionales y extranjeros, dinamizando la economía local (artesanos, transportistas, agricultores) y promoviendo la conservación de las reservas naturales de la región.
 
-### 3.3 Sustentabilidad Ambiental (Iniciativa "Cero Papel")
+### 4.3 Sustentabilidad Ambiental (Iniciativa "Cero Papel")
 La gestión tradicional de los lodges se realiza en cuadernos de registro, fichas impresas y boletas manuales.
 - El módulo de **Check-in por QR** permite que el huésped escanee su código y complete sus datos desde su smartphone, eliminando la necesidad de imprimir fichas de registro físicas.
 - Todo el control de inventario, consumos de restaurante y reservas es digital, reduciendo drásticamente la huella de carbono y el desperdicio de papel en el negocio.
 
-### 3.4 Resiliencia y Continuidad Operativa en Zonas Rurales
+### 4.4 Resiliencia y Continuidad Operativa en Zonas Rurales
 En comunidades alejadas de Tarapoto, Sauce o Moyobamba, el servicio eléctrico y el internet móvil son inestables. Un software común de gestión hotelera dejaría al negocio inoperativo durante una caída de red. La arquitectura **Offline-First** de SelvaStay Pro garantiza la resiliencia operativa, permitiendo que el negocio siga registrando huéspedes y consumos sin interrupciones, protegiendo los ingresos de las familias locales que viven del turismo.
 
 ---
 
-## 4. TEMAS DEL CURSO DE GESTIÓN DE PROYECTOS APLICADOS
+## 5. TEMAS DEL CURSO DE GESTIÓN DE PROYECTOS APLICADOS
 
 El desarrollo de SelvaStay Pro se estructuró siguiendo los estándares del **PMBOK (Project Management Body of Knowledge)** y marcos ágiles de trabajo, lo que justifica académicamente el rigor del proyecto en un VII ciclo de Ingeniería de Sistemas:
 
-### 4.1 Enfoque de Ciclo de Vida Híbrido
+### 5.1 Enfoque de Ciclo de Vida Híbrido
 Combinamos lo mejor de dos mundos para asegurar el éxito del proyecto:
 - **Predictivo (Cascada):** Para la definición del alcance inicial, el diseño de la arquitectura de la base de datos (PostgreSQL) y el presupuesto del proyecto.
 - **Adaptativo (Ágil - Scrum):** Para el desarrollo del software, permitiendo entregas incrementales (sprints) y adaptándonos al feedback rápido del usuario.
@@ -111,7 +129,7 @@ Fase de Planificación (Predictiva) ──► Sprints de Desarrollo (Ágiles - S
    [Alcance, Arquitectura]           [Sprint 1, Sprint 2, Sprint 3]            [Vercel, Supabase Cloud]
 ```
 
-### 4.2 Áreas de Conocimiento PMBOK Aplicadas
+### 5.2 Áreas de Conocimiento PMBOK Aplicadas
 
 1. **Gestión del Alcance del Proyecto:**
    - **EDT (Estructura de Desglose de Trabajo):** Desglosamos el proyecto en paquetes de trabajo: Base de Datos, Interfaz de Usuario, Lógica Offline, y Gestión de Proyectos.
@@ -139,11 +157,11 @@ Fase de Planificación (Predictiva) ──► Sprints de Desarrollo (Ágiles - S
 
 ---
 
-## 5. BALOTARIO DE DEFENSA: RESPUESTAS ANTE PREGUNTAS CRÍTICAS
+## 6. BALOTARIO DE DEFENSA: RESPUESTAS ANTE PREGUNTAS CRÍTICAS
 
 *Para obtener la máxima calificación, el equipo debe responder con seguridad, tecnicismo y criterio de ingeniería. Aquí tienes las preguntas más difíciles que un jurado o docente de Gestión de Proyectos y Desarrollo de Software podría formular, junto con sus respuestas estratégicas:*
 
-### 5.1 Preguntas sobre Arquitectura y Desarrollo de Software
+### 6.1 Preguntas sobre Arquitectura y Desarrollo de Software
 
 #### ❓ Pregunta 1: "¿Por qué decidieron utilizar Supabase y React en lugar de tecnologías tradicionales como PHP puro con MySQL?"
 > **💡 Respuesta Estratégica:**  
@@ -163,7 +181,7 @@ Fase de Planificación (Predictiva) ──► Sprints de Desarrollo (Ágiles - S
 
 ---
 
-### 5.2 Preguntas sobre Gestión de Proyectos (Curso)
+### 6.2 Preguntas sobre Gestión de Proyectos (Curso)
 
 #### ❓ Pregunta 4: "¿Cómo justifican la inclusión de un módulo de gestión de proyectos dentro de un software de reservas de hotel? ¿No es una desviación del alcance?"
 > **💡 Respuesta Estratégica:**  
@@ -184,7 +202,7 @@ Fase de Planificación (Predictiva) ──► Sprints de Desarrollo (Ágiles - S
 
 ---
 
-### 5.3 Preguntas sobre el MVP e Impacto
+### 6.3 Preguntas sobre el MVP e Impacto
 
 #### ❓ Pregunta 7: "¿Por qué este sistema es realmente viable para un eco-lodge en San Martín en comparación con soluciones gratuitas como hojas de cálculo de Google?"
 > **💡 Respuesta Estratégica:**  
@@ -200,53 +218,53 @@ Fase de Planificación (Predictiva) ──► Sprints de Desarrollo (Ágiles - S
 
 ---
 
-## 6. EXPLICACIÓN DETALLADA DE CADA APARTADO DEL SISTEMA (Resumen Operativo)
+## 7. EXPLICACIÓN DETALLADA DE CADA APARTADO DEL SISTEMA (Resumen Operativo)
 
 *(Esta sección complementa los módulos explicados en el apartado 2, ideal para la revisión de los docentes del curso)*
 
-### 6.1 🔐 Inicio de Sesión (LoginPage.jsx)
+### 7.1 🔐 Inicio de Sesión (LoginPage.jsx)
 Controla el acceso al sistema. En esta fase de primer avance, valida credenciales contra datos demostrativos en local, preparando la integración con la API de Supabase Auth en el siguiente sprint.
 
-### 6.2 📊 Dashboard de Control (DashboardPage.jsx)
+### 7.2 📊 Dashboard de Control (DashboardPage.jsx)
 Consolida KPIs críticos: total de habitaciones disponibles, ocupadas, reservadas y porcentaje de ocupación diaria. Integra un widget meteorológico dinámico que consume la API de OpenWeather para alertar al personal sobre lluvias o tormentas que requieran preparar paraguas o servicios especiales para los huéspedes.
 
-### 6.3 🗺️ LodgeMap Interactivo (LodgeMap.jsx)
+### 7.3 🗺️ LodgeMap Interactivo (LodgeMap.jsx)
 Desarrollado con tecnologías nativas de React y CSS. Permite arrastrar el plano con el cursor (pan), realizar acercamientos (zoom) y hacer clic sobre las habitaciones para disparar modales de estado. Mapea visualmente el estado del lodge reduciendo errores de asignación.
 
-### 6.4 📅 Reservas (ReservasPage.jsx)
+### 7.4 📅 Reservas (ReservasPage.jsx)
 Maneja la lógica del flujo de estados (Pendiente, Confirmada, Check-in, Check-out). Registra fechas de estancia, huéspedes, calcula montos totales y asocia clientes de forma dinámica.
 
-### 6.5 👥 Clientes y Huéspedes (ClientesPage.jsx)
+### 7.5 👥 Clientes y Huéspedes (ClientesPage.jsx)
 Centraliza la base de datos de clientes con soporte para DNI peruano y pasaportes extranjeros. Permite realizar búsquedas inteligentes por número de documento o nombre para acelerar el proceso de reserva recurrente.
 
-### 6.6 🍽️ Consumos Extra (ServiciosPage.jsx)
+### 7.6 🍽️ Consumos Extra (ServiciosPage.jsx)
 Registra consumos adicionales (restaurante, guiados a cataratas, spa, traslados) imputándolos a la cuenta de la reserva activa para su posterior facturación unificada al momento del Check-out.
 
-### 6.7 📋 Proyectos y Sprints (ProyectosPage.jsx)
+### 7.7 📋 Proyectos y Sprints (ProyectosPage.jsx)
 Integra el tablero Kanban interactivo para la gestión interna de mantenimiento y marketing. Incluye una vista de **Gantt integrada** que grafica las fechas de inicio y fin de cada tarea en formato de barras temporales horizontales.
 
-### 6.8 ⚙️ Configuración del Sistema (ConfigPage.jsx)
-Habilita la adaptabilidad total del software. Un switch cambia el giro de negocio y actualiza toda la terminología de la interfaz en tiempo real, permitiendo revender o adaptar este software a otros rubros como Coworkings, alquiler de autos o canchas deportivas.
+### 7.8 ⚙️ Configuración del Sistema (ConfigPage.jsx)
+Habilita la adaptabilidad total del software. Un switch cambia el giro de negocio y updates toda la terminología de la interfaz en tiempo real, permitiendo revender o adaptar este software a otros rubros como Coworkings, alquiler de autos o canchas deportivas.
 
-### 6.9 📝 Bitácora de Trazabilidad (Auditoría)
+### 7.9 📝 Bitácora de Trazabilidad (Auditoría)
 Registra cada evento crítico del sistema (ej. *"Reserva #105 creada"*, *"Tarea de mantenimiento movida a Finalizado"*) con marca de tiempo precisa, permitiendo exportar todo el log en formato estructurado JSON para auditorías de calidad de software bajo estándares ISO.
 
 ---
 
-## 7. ARQUITECTURA TÉCNICA E INTEGRACIÓN CLOUD
+## 8. ARQUITECTURA TÉCNICA E INTEGRACIÓN CLOUD
 
-### 7.1 Stack Tecnológico Implementado
+### 8.1 Stack Tecnológico Implementado
 - **React 19 & Vite:** Frontend ágil y de carga instantánea.
 - **Tailwind CSS 4:** Estilos modernos y responsivos con variables dinámicas.
 - **Supabase Cloud (PostgreSQL & WebSockets):** Persistencia relacional remota y actualización reactiva en tiempo real.
 - **LocalStorage Web API:** Motor de base de datos local para el modo Offline-First.
 
-### 7.2 Flujo de Sincronización de Datos (Offline-First)
+### 8.2 Flujo de Sincronización de Datos (Offline-First)
 El sistema valida constantemente el estado de la red (mediante oyentes del navegador `window.addEventListener('online')`). Si detecta pérdida de red, conmuta a modo local sin interrumpir la sesión del usuario. Al retornar la red, los datos pendientes se insertan en Supabase de forma asíncrona garantizando consistencia.
 
 ---
 
-## 8. ACCESOS Y ENLACES DEL PROYECTO
+## 9. ACCESOS Y ENLACES DEL PROYECTO
 
 | Recurso | Enlace / Ubicación |
 |---------|--------------------|
